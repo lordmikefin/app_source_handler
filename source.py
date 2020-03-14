@@ -24,6 +24,11 @@ import xml.etree.ElementTree as ET
 from .tag import Tag
 from . import __version__
 
+# TODO: should this be a class ?
+APPS = {
+    'eclipse': []
+    }
+
 
 def create_sample(source_file: str):
     file = source_file
@@ -41,13 +46,40 @@ def create_sample(source_file: str):
 
     #indent(root)
     tree.write(file, encoding="UTF-8", xml_declaration=True)
+    # TODO: create md5 file
 
 def parse(source_file: str):
+    global APPS
     print('parse the source XML file')
     file = source_file
     tree = ET.parse(file)
     root = tree.getroot()
     for elem in root:
+        # TODO: parse into global var
+        '''
+        eclipse_list = list(APPS.get('eclipse', []))
+        eclipse_list['latest'] = '2019-09'
+        eclipse_list['versions'] = [
+            'version': '2019-09'
+            'url': 'https://...'
+            'url_md5': 'https://...'
+            'md5sum': 'A1B2C3FF'
+        ]
+
+        eclipse_plugins = list(eclipse_list.get('plugins', []))
+        eclipse_pydev = list(eclipse_plugins.get('pydev', []))
+        eclipse_pydev['versions'] = [
+            'version': '2019-09'
+            'url': 'https://...'
+            'url_md5': 'https://...'
+            'md5sum': 'A1B2C3FF'
+        ]
+
+        eclipse_plugins['pydev'] = eclipse_pydev
+        eclipse_list['plugins'] = eclipse_plugins
+
+        APPS['eclipse'] = eclipse_list
+        '''
         if elem.tag == Tag.version:
             version = elem.text
             print('source XML file version: ' + str(version))
