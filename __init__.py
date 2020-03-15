@@ -20,7 +20,7 @@
 """
 
 __license__ = "MIT License"
-__version__ = "0.0.4"
-__revision__ = "app_source_handler (module)  v" + __version__ + " (2020-03-15)"
+__version__ = "0.0.5"
+__revision__ = "app_source_handler (module)  v" + __version__ + " (2020-03-16)"
 
 from . import source

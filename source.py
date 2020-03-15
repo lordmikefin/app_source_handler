@@ -78,7 +78,8 @@ def append_eclipse(apps: Element):
                 version='2019-09',
                 url='https://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/2019-09/R/eclipse-javascript-2019-09-R-win32-x86_64.zip',
                 md5url='https://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/2019-09/R/eclipse-javascript-2019-09-R-win32-x86_64.zip.md5',
-                md5sum='7b97b5c42cb30f36f14b8c90342a9e55')
+                md5sum='7b97b5c42cb30f36f14b8c90342a9e55',
+                file='eclipse-javascript-2019-09-R-win32-x86_64.zip')
 
     append_plugins(ecli_elem)
 
@@ -94,10 +95,11 @@ def append_plugins(ecli_elem: Element):
                 version='7.4.0',
                 url='https://sourceforge.net/projects/pydev/files/pydev/PyDev%207.4.0/PyDev 7.4.0.zip/download',
                 # md5url='https://...',  # TODO: does sourceforge provide the sm5 file?
-                md5sum='722dfe4a9bf1f50a2766c4d58eb6dd4d')
+                md5sum='722dfe4a9bf1f50a2766c4d58eb6dd4d',
+                file='PyDev 7.4.0.zip')
 
 def set_version(elem: Element, version: str=None, url: str=None, md5url: str=None,
-                md5sum: str=None):
+                md5sum: str=None, file: str=None):
     versions = ET.SubElement(elem, Tag.versions)
     if not version:
         return  # noting to do
@@ -107,6 +109,7 @@ def set_version(elem: Element, version: str=None, url: str=None, md5url: str=Non
     set_url(version_elem, url)
     set_md5url(version_elem, md5url)
     set_md5sum(version_elem, md5sum)
+    set_file(version_elem, file)
 
 def set_url(elem: Element, url: str=None):
     if url:
@@ -123,6 +126,11 @@ def set_md5sum(elem: Element, md5sum: str=None):
         md5sum_elem = ET.SubElement(elem, Tag.md5sum)
         md5sum_elem.text = md5sum
 
+def set_file(elem: Element, file: str=None):
+    if file:
+        file_elem = ET.SubElement(elem, Tag.file)
+        file_elem.text = file
+
 def parse(source_file: str):
     # TODO: is there better way to fix Eclipse auto complete ?
     if False:  # for Eclipse auto complete only :)
@@ -135,32 +143,6 @@ def parse(source_file: str):
     root = tree.getroot()
     is_version = False
     for elem in root:
-        # TODO: parse into global var
-        '''
-        eclipse_list = list(APPS.get('eclipse', []))
-        eclipse_list['latest'] = '2019-09'
-        eclipse_list['versions'] = [
-            'version': '2019-09'
-            'url': 'https://...'
-            'url_md5': 'https://...'
-            'md5sum': 'A1B2C3FF'
-        ]
-
-        eclipse_plugins = list(eclipse_list.get('plugins', []))
-        eclipse_pydev = list(eclipse_plugins.get('pydev', []))
-        eclipse_pydev['latest'] = '2019-09'
-        eclipse_pydev['versions'] = [
-            'version': '2019-09'
-            'url': 'https://...'
-            'url_md5': 'https://...'
-            'md5sum': 'A1B2C3FF'
-        ]
-
-        eclipse_plugins['pydev'] = eclipse_pydev
-        eclipse_list['plugins'] = eclipse_plugins
-
-        APPS['eclipse'] = eclipse_list
-        '''
         if elem.tag == Tag.version:
             is_version = True
             version = elem.text
@@ -229,6 +211,8 @@ def parse_versions(elem: Element, versions_dict: dict):
                     data['md5url'] = ver_tag.text
                 elif ver_tag.tag == Tag.md5sum:
                     data['md5sum'] = ver_tag.text
+                elif ver_tag.tag == Tag.file:
+                    data['file'] = ver_tag.text
                 else:
                     print('Unhandled tag: ' + str(ver_tag.tag))
         else:
