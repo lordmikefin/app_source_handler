@@ -24,3 +24,4 @@ class Tag():
     version = 'version'
 
     apps = 'apps'
+    app = 'app'

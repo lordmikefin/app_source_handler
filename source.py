@@ -23,11 +23,22 @@ import xml.etree.ElementTree as ET
 #from . import source_file
 from .tag import Tag
 from . import __version__
+from xml.etree.ElementTree import Element
 
 # TODO: should this be a class ?
 APPS = {
     'eclipse': []
     }
+
+
+class Names():
+    name_key = 'name'
+
+    class Eclipse():
+        name = 'eclipse'
+
+        class Plugin():
+            pydev = 'pydev'
 
 
 def create_sample(source_file: str):
@@ -43,10 +54,19 @@ def create_sample(source_file: str):
     version.text = __version__
 
     apps = ET.SubElement(root, Tag.apps)
+    append_eclipse(apps)
 
     #indent(root)
     tree.write(file, encoding="UTF-8", xml_declaration=True)
     # TODO: create md5 file
+
+def append_eclipse(apps: Element):
+    # TODO: is there better way to fix Eclipse auto complete ?
+    if False:  # for Eclipse auto complete only :)
+        ecli_elem = Element()
+        print('ERROR: this should not we printed! :: ecli_elem: ' + str(ecli_elem))
+    ecli_elem = ET.SubElement(apps, Tag.app)
+    ecli_elem.set(Names.name_key, Names.Eclipse.name)
 
 def parse(source_file: str):
     global APPS
@@ -68,6 +88,7 @@ def parse(source_file: str):
 
         eclipse_plugins = list(eclipse_list.get('plugins', []))
         eclipse_pydev = list(eclipse_plugins.get('pydev', []))
+        eclipse_pydev['latest'] = '2019-09'
         eclipse_pydev['versions'] = [
             'version': '2019-09'
             'url': 'https://...'
