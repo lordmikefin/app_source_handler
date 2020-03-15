@@ -129,6 +129,7 @@ def parse(source_file: str):
     file = source_file
     tree = ET.parse(file)
     root = tree.getroot()
+    is_version = False
     for elem in root:
         # TODO: parse into global var
         '''
@@ -157,6 +158,7 @@ def parse(source_file: str):
         APPS['eclipse'] = eclipse_list
         '''
         if elem.tag == Tag.version:
+            is_version = True
             version = elem.text
             print('source XML file version: ' + str(version))
             # TODO: do real version comparsion
@@ -165,6 +167,9 @@ def parse(source_file: str):
                 print('WARNING: version different.')
         else:
             print('Unhandled tag: ' + str(elem.tag))
+
+    if not is_version:
+        print('ERROR: source XML file version must be defined.')
 
 def indent(elem, level=0):
     ''' Indent the xml tree '''
