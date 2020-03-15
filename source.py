@@ -181,25 +181,17 @@ def parse(source_file: str):
 
 def parse_apps(elem: Element):
     global APPS
-    '''
-        eclipse_list = list(APPS.get('eclipse', []))
-        eclipse_list['latest'] = '2019-09'
-        eclipse_list['versions'] = [
-            'version': '2019-09'
-            'url': 'https://...'
-            'url_md5': 'https://...'
-            'md5sum': 'A1B2C3FF'
-        ]
-    '''
     for elem_app in elem:
         if elem_app.tag == Tag.app:
             #eclipse_list = list(APPS.get('eclipse', []))
-            eclipse_dict = dict(APPS.get(Names.Eclipse.name, {}))
             #ecli_elem.set(Names.name_key, Names.Eclipse.name)
             name = elem_app.get(Names.name_key, None)
             if not name:
                 print('ERROR: Name is not defined. Skip element.')
             print('name: ' + str(name))
+            eclipse_dict = {}
+            if name == Names.Eclipse.name:
+                eclipse_dict = dict(APPS.get(Names.Eclipse.name, {}))
             for tags_app in elem_app:
                 if tags_app.tag == Tag.latest:
                     eclipse_dict['latest'] = tags_app.text
@@ -209,13 +201,15 @@ def parse_apps(elem: Element):
                     parse_versions(tags_app, versions_dict)
                     eclipse_dict['versions'] = versions_dict
                 elif tags_app.tag == Tag.plugins:
-                    plugins = tags_app.text
-                    #eclipse_plugins = list(eclipse_list.get('plugins', []))
-                    parse_plugins(tags_app)
-                    #eclipse_list['plugins'] = eclipse_plugins
+                    #plugins = tags_app.text
+                    plugins_dict = dict(eclipse_dict.get('plugins', {}))
+                    parse_plugins(tags_app, plugins_dict)
+                    eclipse_dict['plugins'] = plugins_dict
                 else:
                     print('Unhandled tag: ' + str(tags_app.tag))
-            APPS[Names.Eclipse.name] = eclipse_dict
+
+            if eclipse_dict:
+                APPS[Names.Eclipse.name] = eclipse_dict
         else:
             print('Unhandled tag: ' + str(elem_app.tag))
 
@@ -230,30 +224,17 @@ def parse_versions(elem: Element, versions_dict: dict):
             versions_dict[str(version)] = data
             for ver_tag in elem_ver:
                 if ver_tag.tag == Tag.url:
-                    pass
+                    data['url'] = ver_tag.text
                 elif ver_tag.tag == Tag.md5url:
-                    pass
+                    data['md5url'] = ver_tag.text
                 elif ver_tag.tag == Tag.md5sum:
-                    pass
+                    data['md5sum'] = ver_tag.text
                 else:
                     print('Unhandled tag: ' + str(ver_tag.tag))
         else:
             print('Unhandled tag: ' + str(elem_ver.tag))
 
-def parse_plugins(elem: Element):
-    '''
-        eclipse_plugins = list(eclipse_list.get('plugins', []))
-        eclipse_pydev = list(eclipse_plugins.get('pydev', []))
-        eclipse_pydev['latest'] = '2019-09'
-        eclipse_pydev['versions'] = [
-            'version': '2019-09'
-            'url': 'https://...'
-            'url_md5': 'https://...'
-            'md5sum': 'A1B2C3FF'
-        ]
-
-        eclipse_plugins['pydev'] = eclipse_pydev
-    '''
+def parse_plugins(elem: Element, plugins_dict: dict):
     for elem_plug in elem:
         if elem_plug.tag == Tag.plugin:
             #plugin.set(Names.name_key, Names.Eclipse.Plugin.pydev)
@@ -261,13 +242,22 @@ def parse_plugins(elem: Element):
             if not name:
                 print('ERROR: Name is not defined. Skip element.')
             print('name: ' + str(name))
+            pydev_dict = {}
+            if name == Names.Eclipse.name:
+                pydev_dict = dict(plugins_dict.get(Names.Eclipse.Plugin.pydev, {}))
             for tags_plug in elem_plug:
                 if tags_plug.tag == Tag.latest:
-                    latest = tags_plug.text
+                    pydev_dict['latest'] = tags_plug.text
                 elif tags_plug.tag == Tag.versions:
-                    versions = tags_plug.text
+                    #versions = tags_plug.text
+                    versions_dict = dict(pydev_dict.get('versions', {}))
+                    parse_versions(tags_plug, versions_dict)
+                    pydev_dict['versions'] = versions_dict
                 else:
                     print('Unhandled tag: ' + str(tags_plug.tag))
+
+            if pydev_dict:
+                plugins_dict[Names.Eclipse.Plugin.pydev] = pydev_dict
         else:
             print('Unhandled tag: ' + str(elem_plug.tag))
 
