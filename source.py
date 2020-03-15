@@ -56,7 +56,7 @@ def create_sample(source_file: str):
     apps = ET.SubElement(root, Tag.apps)
     append_eclipse(apps)
 
-    #indent(root)
+    indent(root)
     tree.write(file, encoding="UTF-8", xml_declaration=True)
     # TODO: create md5 file
 
@@ -110,3 +110,25 @@ def parse(source_file: str):
                 print('WARNING: version different.')
         else:
             print('Unhandled tag: ' + str(elem.tag))
+
+def indent(elem, level=0):
+    ''' Indent the xml tree '''
+    # TODO: this should be part of 'xml.etree.ElementTree'
+    # NOTE: Copied from 'setup_apps'  :)
+    # TODO: Create common code base! And move this there.
+
+    # NOTE: code copied from stackoverflow
+    # https://stackoverflow.com/questions/3095434/inserting-newlines-in-xml-file-generated-via-xml-etree-elementtree-in-python
+    i = "\n" + level*"  "
+    if len(elem):
+        if not elem.text or not elem.text.strip():
+            elem.text = i + "  "
+        if not elem.tail or not elem.tail.strip():
+            elem.tail = i
+        for elem in elem:
+            indent(elem, level+1)
+        if not elem.tail or not elem.tail.strip():
+            elem.tail = i
+    else:
+        if level and (not elem.tail or not elem.tail.strip()):
+            elem.tail = i
