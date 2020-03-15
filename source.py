@@ -87,7 +87,7 @@ def append_plugins(ecli_elem: Element):
     plugin = ET.SubElement(plugins, Tag.plugin)
     plugin.set(Names.name_key, Names.Eclipse.Plugin.pydev)
 
-    lateset = ET.SubElement(ecli_elem, Tag.latest)
+    lateset = ET.SubElement(plugin, Tag.latest)
     lateset.text = '7.4.0'
 
     set_version(plugin,
@@ -124,6 +124,10 @@ def set_md5sum(elem: Element, md5sum: str=None):
         md5sum_elem.text = md5sum
 
 def parse(source_file: str):
+    # TODO: is there better way to fix Eclipse auto complete ?
+    if False:  # for Eclipse auto complete only :)
+        elem = Element()
+        print('ERROR: this should not we printed! :: elem: ' + str(elem))
     global APPS
     print('parse the source XML file')
     file = source_file
@@ -165,11 +169,29 @@ def parse(source_file: str):
             if version != __version__:
                 # TODO: log warnings.
                 print('WARNING: version different.')
+        elif elem.tag == Tag.apps:
+            parse_apps(elem)
         else:
             print('Unhandled tag: ' + str(elem.tag))
 
     if not is_version:
         print('ERROR: source XML file version must be defined.')
+
+def parse_apps(elem: Element):
+    for elem_app in elem:
+        if elem_app.tag == Tag.app:
+            #ecli_elem.set(Names.name_key, Names.Eclipse.name)
+            name = elem_app.get(Names.name_key, None)
+            if not name:
+                print('ERROR: Name is not defined. Skip element.')
+            print('name: ' + str(name))
+            for tags_app in elem_app:
+                if False:
+                    pass
+                else:
+                    print('Unhandled tag: ' + str(tags_app.tag))
+        else:
+            print('Unhandled tag: ' + str(elem_app.tag))
 
 def indent(elem, level=0):
     ''' Indent the xml tree '''
