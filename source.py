@@ -64,9 +64,35 @@ def append_eclipse(apps: Element):
     # TODO: is there better way to fix Eclipse auto complete ?
     if False:  # for Eclipse auto complete only :)
         ecli_elem = Element()
-        print('ERROR: this should not we printed! :: ecli_elem: ' + str(ecli_elem))
+        lateset = Element()
+        print('ERROR: this should not we printed! :: ecli_elem: ' + str(ecli_elem) +
+              ' :: lateset: ' + str(lateset))
     ecli_elem = ET.SubElement(apps, Tag.app)
     ecli_elem.set(Names.name_key, Names.Eclipse.name)
+
+    lateset = ET.SubElement(ecli_elem, Tag.latest)
+    lateset.text = '2019-09'
+
+    set_values(ecli_elem)
+
+    append_plugins(ecli_elem)
+
+def append_plugins(ecli_elem: Element):
+    plugins = ET.SubElement(ecli_elem, Tag.plugins)
+    plugin = ET.SubElement(plugins, Tag.plugin)
+
+    set_values(plugin)
+
+def set_values(elem: Element):
+    versions = ET.SubElement(elem, Tag.versions)
+    version = ET.SubElement(versions, Tag.version)
+    version.text = '2019-09'
+    url = ET.SubElement(versions, Tag.url)
+    url.text = 'https://...'
+    md5url = ET.SubElement(versions, Tag.md5url)
+    md5url.text = 'https://...'
+    md5sum = ET.SubElement(versions, Tag.md5sum)
+    md5sum.text = 'A1B2C3FF'
 
 def parse(source_file: str):
     global APPS

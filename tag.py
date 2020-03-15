@@ -25,3 +25,12 @@ class Tag():
 
     apps = 'apps'
     app = 'app'
+
+    plugins = 'plugins'
+    plugin = 'plugin'
+
+    latest = 'latest'
+    versions = 'versions'
+    url = 'url'
+    md5url = 'md5url'
+    md5sum = 'md5sum'
