@@ -186,12 +186,35 @@ def parse_apps(elem: Element):
                 print('ERROR: Name is not defined. Skip element.')
             print('name: ' + str(name))
             for tags_app in elem_app:
-                if False:
-                    pass
+                if tags_app.tag == Tag.latest:
+                    latest = elem.text
+                elif tags_app.tag == Tag.versions:
+                    versions = elem.text
+                elif tags_app.tag == Tag.plugins:
+                    plugins = elem.text
+                    parse_plugins(tags_app)
                 else:
                     print('Unhandled tag: ' + str(tags_app.tag))
         else:
             print('Unhandled tag: ' + str(elem_app.tag))
+
+def parse_plugins(elem: Element):
+    for elem_plug in elem:
+        if elem_plug.tag == Tag.plugin:
+            #plugin.set(Names.name_key, Names.Eclipse.Plugin.pydev)
+            name = elem_plug.get(Names.name_key, None)
+            if not name:
+                print('ERROR: Name is not defined. Skip element.')
+            print('name: ' + str(name))
+            for tags_plug in elem_plug:
+                if tags_plug.tag == Tag.latest:
+                    latest = elem.text
+                elif tags_plug.tag == Tag.versions:
+                    versions = elem.text
+                else:
+                    print('Unhandled tag: ' + str(tags_plug.tag))
+        else:
+            print('Unhandled tag: ' + str(elem_plug.tag))
 
 def indent(elem, level=0):
     ''' Indent the xml tree '''
