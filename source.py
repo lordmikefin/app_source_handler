@@ -27,7 +27,7 @@ from xml.etree.ElementTree import Element
 
 # TODO: should this be a class ?
 APPS = {
-    'eclipse': []
+    'eclipse': {}
     }
 
 
@@ -128,7 +128,7 @@ def parse(source_file: str):
     if False:  # for Eclipse auto complete only :)
         elem = Element()
         print('ERROR: this should not we printed! :: elem: ' + str(elem))
-    global APPS
+    #global APPS
     print('parse the source XML file')
     file = source_file
     tree = ET.parse(file)
@@ -170,7 +170,9 @@ def parse(source_file: str):
                 # TODO: log warnings.
                 print('WARNING: version different.')
         elif elem.tag == Tag.apps:
+            #eclipse_list = list(APPS.get('eclipse', []))
             parse_apps(elem)
+            #APPS['eclipse'] = eclipse_list
         else:
             print('Unhandled tag: ' + str(elem.tag))
 
@@ -178,8 +180,21 @@ def parse(source_file: str):
         print('ERROR: source XML file version must be defined.')
 
 def parse_apps(elem: Element):
+    global APPS
+    '''
+        eclipse_list = list(APPS.get('eclipse', []))
+        eclipse_list['latest'] = '2019-09'
+        eclipse_list['versions'] = [
+            'version': '2019-09'
+            'url': 'https://...'
+            'url_md5': 'https://...'
+            'md5sum': 'A1B2C3FF'
+        ]
+    '''
     for elem_app in elem:
         if elem_app.tag == Tag.app:
+            #eclipse_list = list(APPS.get('eclipse', []))
+            eclipse_dict = dict(APPS.get(Names.Eclipse.name, {}))
             #ecli_elem.set(Names.name_key, Names.Eclipse.name)
             name = elem_app.get(Names.name_key, None)
             if not name:
@@ -187,18 +202,58 @@ def parse_apps(elem: Element):
             print('name: ' + str(name))
             for tags_app in elem_app:
                 if tags_app.tag == Tag.latest:
-                    latest = elem.text
+                    eclipse_dict['latest'] = tags_app.text
                 elif tags_app.tag == Tag.versions:
-                    versions = elem.text
+                    #eclipse_dict['version'] = tags_app.text
+                    versions_dict = dict(APPS.get('versions', {}))
+                    parse_versions(tags_app, versions_dict)
+                    eclipse_dict['versions'] = versions_dict
                 elif tags_app.tag == Tag.plugins:
-                    plugins = elem.text
+                    plugins = tags_app.text
+                    #eclipse_plugins = list(eclipse_list.get('plugins', []))
                     parse_plugins(tags_app)
+                    #eclipse_list['plugins'] = eclipse_plugins
                 else:
                     print('Unhandled tag: ' + str(tags_app.tag))
+            APPS[Names.Eclipse.name] = eclipse_dict
         else:
             print('Unhandled tag: ' + str(elem_app.tag))
 
+def parse_versions(elem: Element, versions_dict: dict):
+    for elem_ver in elem:
+        if elem_ver.tag == Tag.version:
+            version = elem_ver.get(Names.version_key, None)
+            if not version:
+                print('ERROR: version is not defined. Skip element.')
+            print('version: ' + str(version))
+            data = {}
+            versions_dict[str(version)] = data
+            for ver_tag in elem_ver:
+                if ver_tag.tag == Tag.url:
+                    pass
+                elif ver_tag.tag == Tag.md5url:
+                    pass
+                elif ver_tag.tag == Tag.md5sum:
+                    pass
+                else:
+                    print('Unhandled tag: ' + str(ver_tag.tag))
+        else:
+            print('Unhandled tag: ' + str(elem_ver.tag))
+
 def parse_plugins(elem: Element):
+    '''
+        eclipse_plugins = list(eclipse_list.get('plugins', []))
+        eclipse_pydev = list(eclipse_plugins.get('pydev', []))
+        eclipse_pydev['latest'] = '2019-09'
+        eclipse_pydev['versions'] = [
+            'version': '2019-09'
+            'url': 'https://...'
+            'url_md5': 'https://...'
+            'md5sum': 'A1B2C3FF'
+        ]
+
+        eclipse_plugins['pydev'] = eclipse_pydev
+    '''
     for elem_plug in elem:
         if elem_plug.tag == Tag.plugin:
             #plugin.set(Names.name_key, Names.Eclipse.Plugin.pydev)
@@ -208,9 +263,9 @@ def parse_plugins(elem: Element):
             print('name: ' + str(name))
             for tags_plug in elem_plug:
                 if tags_plug.tag == Tag.latest:
-                    latest = elem.text
+                    latest = tags_plug.text
                 elif tags_plug.tag == Tag.versions:
-                    versions = elem.text
+                    versions = tags_plug.text
                 else:
                     print('Unhandled tag: ' + str(tags_plug.tag))
         else:
