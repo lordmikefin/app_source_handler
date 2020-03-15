@@ -33,6 +33,7 @@ APPS = {
 
 class Names():
     name_key = 'name'
+    version_key = 'string'
 
     class Eclipse():
         name = 'eclipse'
@@ -73,26 +74,54 @@ def append_eclipse(apps: Element):
     lateset = ET.SubElement(ecli_elem, Tag.latest)
     lateset.text = '2019-09'
 
-    set_values(ecli_elem)
+    set_version(ecli_elem,
+                version='2019-09',
+                url='https://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/2019-09/R/eclipse-javascript-2019-09-R-win32-x86_64.zip',
+                md5url='https://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/2019-09/R/eclipse-javascript-2019-09-R-win32-x86_64.zip.md5',
+                md5sum='7b97b5c42cb30f36f14b8c90342a9e55')
 
     append_plugins(ecli_elem)
 
 def append_plugins(ecli_elem: Element):
     plugins = ET.SubElement(ecli_elem, Tag.plugins)
     plugin = ET.SubElement(plugins, Tag.plugin)
+    plugin.set(Names.name_key, Names.Eclipse.Plugin.pydev)
 
-    set_values(plugin)
+    lateset = ET.SubElement(ecli_elem, Tag.latest)
+    lateset.text = '7.4.0'
 
-def set_values(elem: Element):
+    set_version(plugin,
+                version='7.4.0',
+                url='https://sourceforge.net/projects/pydev/files/pydev/PyDev%207.4.0/PyDev 7.4.0.zip/download',
+                # md5url='https://...',  # TODO: does sourceforge provide the sm5 file?
+                md5sum='722dfe4a9bf1f50a2766c4d58eb6dd4d')
+
+def set_version(elem: Element, version: str=None, url: str=None, md5url: str=None,
+                md5sum: str=None):
     versions = ET.SubElement(elem, Tag.versions)
-    version = ET.SubElement(versions, Tag.version)
-    version.text = '2019-09'
-    url = ET.SubElement(versions, Tag.url)
-    url.text = 'https://...'
-    md5url = ET.SubElement(versions, Tag.md5url)
-    md5url.text = 'https://...'
-    md5sum = ET.SubElement(versions, Tag.md5sum)
-    md5sum.text = 'A1B2C3FF'
+    if not version:
+        return  # noting to do
+    version_elem = ET.SubElement(versions, Tag.version)
+    #version_elem.text = '2019-09'
+    version_elem.set(Names.version_key, version)
+    set_url(version_elem, url)
+    set_md5url(version_elem, md5url)
+    set_md5sum(version_elem, md5sum)
+
+def set_url(elem: Element, url: str=None):
+    if url:
+        url_elem = ET.SubElement(elem, Tag.url)
+        url_elem.text = url
+
+def set_md5url(elem: Element, md5url: str=None):
+    if md5url:
+        md5url_elem = ET.SubElement(elem, Tag.md5url)
+        md5url_elem.text = md5url
+
+def set_md5sum(elem: Element, md5sum: str=None):
+    if md5sum:
+        md5sum_elem = ET.SubElement(elem, Tag.md5sum)
+        md5sum_elem.text = md5sum
 
 def parse(source_file: str):
     global APPS
