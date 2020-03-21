@@ -229,22 +229,21 @@ def parse_plugins(elem: Element, plugins_dict: dict):
             if not name:
                 print('ERROR: Name is not defined. Skip element.')
             print('name: ' + str(name))
-            pydev_dict = {}
-            if name == Names.Eclipse.name:
-                pydev_dict = dict(plugins_dict.get(Names.Eclipse.Plugin.pydev, {}))
-            for tags_plug in elem_plug:
-                if tags_plug.tag == Tag.latest:
-                    pydev_dict['latest'] = tags_plug.text
-                elif tags_plug.tag == Tag.versions:
-                    #versions = tags_plug.text
-                    versions_dict = dict(pydev_dict.get('versions', {}))
-                    parse_versions(tags_plug, versions_dict)
-                    pydev_dict['versions'] = versions_dict
-                else:
-                    print('Unhandled tag: ' + str(tags_plug.tag))
-
-            if pydev_dict:
-                plugins_dict[Names.Eclipse.Plugin.pydev] = pydev_dict
+            if name == Names.Eclipse.Plugin.pydev:
+                pydev_dict = dict(plugins_dict.get(name, {}))
+                for tags_plug in elem_plug:
+                    if tags_plug.tag == Tag.latest:
+                        pydev_dict['latest'] = tags_plug.text
+                    elif tags_plug.tag == Tag.versions:
+                        #versions = tags_plug.text
+                        versions_dict = dict(pydev_dict.get('versions', {}))
+                        parse_versions(tags_plug, versions_dict)
+                        pydev_dict['versions'] = versions_dict
+                    else:
+                        print('Unhandled tag: ' + str(tags_plug.tag))
+    
+                if pydev_dict:
+                    plugins_dict[name] = pydev_dict
         else:
             print('Unhandled tag: ' + str(elem_plug.tag))
 
