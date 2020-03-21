@@ -172,27 +172,31 @@ def parse_apps(elem: Element):
                 print('ERROR: Name is not defined. Skip element.')
             print('name: ' + str(name))
             if name == Names.Eclipse.name:
-                eclipse_dict = dict(APPS.get(name, {}))
-                for tags_app in elem_app:
-                    if tags_app.tag == Tag.latest:
-                        eclipse_dict['latest'] = tags_app.text
-                    elif tags_app.tag == Tag.versions:
-                        #eclipse_dict['version'] = tags_app.text
-                        versions_dict = dict(APPS.get('versions', {}))
-                        parse_versions(tags_app, versions_dict)
-                        eclipse_dict['versions'] = versions_dict
-                    elif tags_app.tag == Tag.plugins:
-                        #plugins = tags_app.text
-                        plugins_dict = dict(eclipse_dict.get('plugins', {}))
-                        parse_plugins(tags_app, plugins_dict)
-                        eclipse_dict['plugins'] = plugins_dict
-                    else:
-                        print('Unhandled tag: ' + str(tags_app.tag))
-    
-                if eclipse_dict:
-                    APPS[name] = eclipse_dict
+                parse_eclipse(elem_app, name)
         else:
             print('Unhandled tag: ' + str(elem_app.tag))
+
+def parse_eclipse(elem: Element, name: str):
+    global APPS
+    eclipse_dict = dict(APPS.get(name, {}))
+    for tags_app in elem:
+        if tags_app.tag == Tag.latest:
+            eclipse_dict['latest'] = tags_app.text
+        elif tags_app.tag == Tag.versions:
+            #eclipse_dict['version'] = tags_app.text
+            versions_dict = dict(APPS.get('versions', {}))
+            parse_versions(tags_app, versions_dict)
+            eclipse_dict['versions'] = versions_dict
+        elif tags_app.tag == Tag.plugins:
+            #plugins = tags_app.text
+            plugins_dict = dict(eclipse_dict.get('plugins', {}))
+            parse_plugins(tags_app, plugins_dict)
+            eclipse_dict['plugins'] = plugins_dict
+        else:
+            print('Unhandled tag: ' + str(tags_app.tag))
+
+    if eclipse_dict:
+        APPS[name] = eclipse_dict
 
 def parse_versions(elem: Element, versions_dict: dict):
     for elem_ver in elem:
