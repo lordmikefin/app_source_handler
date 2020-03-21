@@ -171,27 +171,26 @@ def parse_apps(elem: Element):
             if not name:
                 print('ERROR: Name is not defined. Skip element.')
             print('name: ' + str(name))
-            eclipse_dict = {}
             if name == Names.Eclipse.name:
-                eclipse_dict = dict(APPS.get(Names.Eclipse.name, {}))
-            for tags_app in elem_app:
-                if tags_app.tag == Tag.latest:
-                    eclipse_dict['latest'] = tags_app.text
-                elif tags_app.tag == Tag.versions:
-                    #eclipse_dict['version'] = tags_app.text
-                    versions_dict = dict(APPS.get('versions', {}))
-                    parse_versions(tags_app, versions_dict)
-                    eclipse_dict['versions'] = versions_dict
-                elif tags_app.tag == Tag.plugins:
-                    #plugins = tags_app.text
-                    plugins_dict = dict(eclipse_dict.get('plugins', {}))
-                    parse_plugins(tags_app, plugins_dict)
-                    eclipse_dict['plugins'] = plugins_dict
-                else:
-                    print('Unhandled tag: ' + str(tags_app.tag))
-
-            if eclipse_dict:
-                APPS[Names.Eclipse.name] = eclipse_dict
+                eclipse_dict = dict(APPS.get(name, {}))
+                for tags_app in elem_app:
+                    if tags_app.tag == Tag.latest:
+                        eclipse_dict['latest'] = tags_app.text
+                    elif tags_app.tag == Tag.versions:
+                        #eclipse_dict['version'] = tags_app.text
+                        versions_dict = dict(APPS.get('versions', {}))
+                        parse_versions(tags_app, versions_dict)
+                        eclipse_dict['versions'] = versions_dict
+                    elif tags_app.tag == Tag.plugins:
+                        #plugins = tags_app.text
+                        plugins_dict = dict(eclipse_dict.get('plugins', {}))
+                        parse_plugins(tags_app, plugins_dict)
+                        eclipse_dict['plugins'] = plugins_dict
+                    else:
+                        print('Unhandled tag: ' + str(tags_app.tag))
+    
+                if eclipse_dict:
+                    APPS[name] = eclipse_dict
         else:
             print('Unhandled tag: ' + str(elem_app.tag))
 
