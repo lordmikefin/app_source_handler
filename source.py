@@ -97,7 +97,7 @@ def append_plugins(ecli_elem: Element):
     plugin.set(Names.name_key, Names.Eclipse.Plugin.pydev)
 
     lateset = ET.SubElement(plugin, Tag.latest)
-    lateset.text = '7.4.0'
+    lateset.text = '7.5.0'
 
     versions = ET.SubElement(plugin, Tag.versions)
     set_version(versions,
@@ -106,6 +106,13 @@ def append_plugins(ecli_elem: Element):
                 # md5url='https://...',  # TODO: does sourceforge provide the sm5 file?
                 md5sum='722dfe4a9bf1f50a2766c4d58eb6dd4d',
                 file='PyDev 7.4.0.zip')
+
+    set_version(versions,
+                version='7.5.0',
+                url='https://sourceforge.net/projects/pydev/files/pydev/PyDev%207.5.0/PyDev 7.5.0.zip/download',
+                # md5url='https://...',  # TODO: does sourceforge provide the sm5 file?
+                md5sum='ca391869d7d9358cab4e2e162a03b57f',
+                file='PyDev 7.5.0.zip')
 
 def set_version(versions: Element, version: str=None, url: str=None, md5url: str=None,
                 md5sum: str=None, file: str=None):
