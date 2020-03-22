@@ -72,14 +72,22 @@ def append_eclipse(apps: Element):
     ecli_elem.set(Names.name_key, Names.Eclipse.name)
 
     lateset = ET.SubElement(ecli_elem, Tag.latest)
-    lateset.text = '2019-09'
+    lateset.text = '2019-12'
 
-    set_version(ecli_elem,
+    versions = ET.SubElement(ecli_elem, Tag.versions)
+    set_version(versions,
                 version='2019-09',
                 url='https://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/2019-09/R/eclipse-javascript-2019-09-R-win32-x86_64.zip',
                 md5url='https://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/2019-09/R/eclipse-javascript-2019-09-R-win32-x86_64.zip.md5',
                 md5sum='7b97b5c42cb30f36f14b8c90342a9e55',
                 file='eclipse-javascript-2019-09-R-win32-x86_64.zip')
+
+    set_version(versions,
+                version='2019-12',
+                url='https://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/2019-12/R/eclipse-javascript-2019-12-R-win32-x86_64.zip',
+                md5url='https://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/2019-12/R/eclipse-javascript-2019-12-R-win32-x86_64.zip.md5',
+                #md5sum='7b97b5c42cb30f36f14b8c90342a9e55',
+                file='eclipse-javascript-2019-12-R-win32-x86_64.zip')
 
     append_plugins(ecli_elem)
 
@@ -91,16 +99,17 @@ def append_plugins(ecli_elem: Element):
     lateset = ET.SubElement(plugin, Tag.latest)
     lateset.text = '7.4.0'
 
-    set_version(plugin,
+    versions = ET.SubElement(plugin, Tag.versions)
+    set_version(versions,
                 version='7.4.0',
                 url='https://sourceforge.net/projects/pydev/files/pydev/PyDev%207.4.0/PyDev 7.4.0.zip/download',
                 # md5url='https://...',  # TODO: does sourceforge provide the sm5 file?
                 md5sum='722dfe4a9bf1f50a2766c4d58eb6dd4d',
                 file='PyDev 7.4.0.zip')
 
-def set_version(elem: Element, version: str=None, url: str=None, md5url: str=None,
+def set_version(versions: Element, version: str=None, url: str=None, md5url: str=None,
                 md5sum: str=None, file: str=None):
-    versions = ET.SubElement(elem, Tag.versions)
+    #versions = ET.SubElement(elem, Tag.versions)
     if not version:
         return  # noting to do
     version_elem = ET.SubElement(versions, Tag.version)
