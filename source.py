@@ -246,11 +246,15 @@ def parse_apps(elem: Element):
                 print('ERROR: Name is not defined. Skip element.')
             print('name: ' + str(name))
             if name == Names.Eclipse.name:
-                parse_eclipse(elem_app, name)
+                parse_app(elem_app, name)
+            if name == Names.Java.name:
+                parse_app(elem_app, name)
+            else:
+                print('Unhandled app: ' + str(name))
         else:
             print('Unhandled tag: ' + str(elem_app.tag))
 
-def parse_eclipse(elem: Element, name: str):
+def parse_app(elem: Element, name: str):
     global APPS
     eclipse_dict = dict(APPS.get(name, {}))
     for tags_app in elem:
@@ -290,6 +294,8 @@ def parse_versions(elem: Element, versions_dict: dict):
                     data['md5sum'] = ver_tag.text
                 elif ver_tag.tag == Tag.file:
                     data['file'] = ver_tag.text
+                elif ver_tag.tag == Tag.sha256url:
+                    data['sha256url'] = ver_tag.text
                 else:
                     print('Unhandled tag: ' + str(ver_tag.tag))
         else:
