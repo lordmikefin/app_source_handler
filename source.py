@@ -160,29 +160,50 @@ def set_version(versions: Element, version: str=None, url: str=None, md5url: str
     set_sha256url(version_elem, sha256url) 
 
 def set_url(elem: Element, url: str=None):
+    create_elem(elem, Tag.url, url)
+    '''
     if url:
         url_elem = ET.SubElement(elem, Tag.url)
         url_elem.text = url
+    '''
 
 def set_md5url(elem: Element, md5url: str=None):
+    create_elem(elem, Tag.md5url, md5url)
+    '''
     if md5url:
         md5url_elem = ET.SubElement(elem, Tag.md5url)
         md5url_elem.text = md5url
+    '''
 
 def set_md5sum(elem: Element, md5sum: str=None):
+    create_elem(elem, Tag.md5sum, md5sum)
+    '''
     if md5sum:
         md5sum_elem = ET.SubElement(elem, Tag.md5sum)
         md5sum_elem.text = md5sum
+    '''
 
 def set_file(elem: Element, file: str=None):
+    create_elem(elem, Tag.file, file)
+    '''
     if file:
         file_elem = ET.SubElement(elem, Tag.file)
         file_elem.text = file
-# 
+    '''
+#
 def set_sha256url(elem: Element, sha256url: str=None):
+    create_elem(elem, Tag.sha256url, sha256url)
+    '''
     if sha256url:
         elem = ET.SubElement(elem, Tag.sha256url)
         elem.text = sha256url
+    '''
+
+def create_elem(elem: Element, tag_name: str=None, text: str=None):
+    if not text:
+        return  # do not create empty element
+    elem = ET.SubElement(elem, tag_name)
+    elem.text = text
 
 def parse(source_file: str):
     # TODO: is there better way to fix Eclipse auto complete ?
