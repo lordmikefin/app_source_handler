@@ -78,6 +78,19 @@ def append_java(apps: Element):
     java_elem = ET.SubElement(apps, Tag.app)
     java_elem.set(Names.name_key, Names.Java.name)
 
+    lateset = ET.SubElement(java_elem, Tag.latest)
+    lateset.text = 'jdk-8.0.242.08-hotspot'
+
+    # https://adoptopenjdk.net/installation.html#windows-msi
+    # https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/tag/jdk8u242-b08
+    versions = ET.SubElement(java_elem, Tag.versions)
+    set_version(versions,
+                version='jdk-8.0.242.08-hotspot',
+                url='https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u242-b08/OpenJDK8U-jdk_x64_windows_hotspot_8u242b08.msi',
+                sha256url='https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u242-b08/OpenJDK8U-jdk_x64_windows_hotspot_8u242b08.msi.sha256.txt',
+                #md5sum='7b97b5c42cb30f36f14b8c90342a9e55',
+                file='OpenJDK8U-jdk_x64_windows_hotspot_8u242b08.msi')
+
 
 def append_eclipse(apps: Element):
     # TODO: is there better way to fix Eclipse auto complete ?
@@ -133,7 +146,7 @@ def append_plugins(ecli_elem: Element):
                 file='PyDev 7.5.0.zip')
 
 def set_version(versions: Element, version: str=None, url: str=None, md5url: str=None,
-                md5sum: str=None, file: str=None):
+                md5sum: str=None, file: str=None, sha256url: str=None):
     #versions = ET.SubElement(elem, Tag.versions)
     if not version:
         return  # noting to do
@@ -144,6 +157,7 @@ def set_version(versions: Element, version: str=None, url: str=None, md5url: str
     set_md5url(version_elem, md5url)
     set_md5sum(version_elem, md5sum)
     set_file(version_elem, file)
+    set_sha256url(version_elem, sha256url) 
 
 def set_url(elem: Element, url: str=None):
     if url:
@@ -164,6 +178,11 @@ def set_file(elem: Element, file: str=None):
     if file:
         file_elem = ET.SubElement(elem, Tag.file)
         file_elem.text = file
+# 
+def set_sha256url(elem: Element, sha256url: str=None):
+    if sha256url:
+        elem = ET.SubElement(elem, Tag.sha256url)
+        elem.text = sha256url
 
 def parse(source_file: str):
     # TODO: is there better way to fix Eclipse auto complete ?
