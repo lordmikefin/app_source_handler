@@ -27,13 +27,17 @@ from xml.etree.ElementTree import Element
 
 # TODO: should this be a class ?
 APPS = {
-    'eclipse': {}
+    'eclipse': {},
+    'java': {},
     }
 
 
 class Names():
     name_key = 'name'
     version_key = 'string'
+
+    class Java():
+        name = 'java'
 
     class Eclipse():
         name = 'eclipse'
@@ -56,10 +60,24 @@ def create_sample(source_file: str):
 
     apps = ET.SubElement(root, Tag.apps)
     append_eclipse(apps)
+    append_java(apps)
 
     indent(root)
     tree.write(file, encoding="UTF-8", xml_declaration=True)
     # TODO: create md5 file
+
+
+def append_java(apps: Element):
+    # TODO: is there better way to fix Eclipse auto complete ?
+    if False:  # for Eclipse auto complete only :)
+        java_elem = Element()
+        lateset = Element()
+        print('ERROR: this should not we printed! :: ecli_elem: ' + str(java_elem) +
+              ' :: lateset: ' + str(lateset))
+
+    java_elem = ET.SubElement(apps, Tag.app)
+    java_elem.set(Names.name_key, Names.Java.name)
+
 
 def append_eclipse(apps: Element):
     # TODO: is there better way to fix Eclipse auto complete ?
