@@ -29,6 +29,7 @@ from xml.etree.ElementTree import Element
 APPS = {
     'eclipse': {},
     'java': {},
+    'npp': {},
     }
 
 
@@ -44,6 +45,9 @@ class Names():
 
         class Plugin():
             pydev = 'pydev'
+
+    class Npp():
+        name = 'npp'
 
 
 def create_sample(source_file: str):
@@ -61,10 +65,39 @@ def create_sample(source_file: str):
     apps = ET.SubElement(root, Tag.apps)
     append_eclipse(apps)
     append_java(apps)
+    append_npp(apps)
 
     indent(root)
     tree.write(file, encoding="UTF-8", xml_declaration=True)
     # TODO: create md5 file
+
+
+def append_app_element(parent: Element, elem_name: str) -> Element:
+    elem = ET.SubElement(parent, Tag.app)
+    elem.set(Names.name_key, elem_name)
+    return elem
+
+
+def append_plugin_element(parent: Element, elem_name: str) -> Element:
+    elem = ET.SubElement(parent, Tag.plugin)
+    elem.set(Names.name_key, elem_name)
+    return elem
+
+
+def append_lateset_element(elem: Element, text: str):
+    lateset = ET.SubElement(elem, Tag.latest)
+    lateset.text = text
+
+
+def append_npp(apps: Element):
+    npp_elem = append_app_element(apps, Names.Npp.name)
+    append_lateset_element(npp_elem, '7.7.1')
+    versions = ET.SubElement(npp_elem, Tag.versions)
+    set_version(versions,
+                version='7.7.1',
+                url='http://download.notepad-plus-plus.org/repository/7.x/7.7.1/npp.7.7.1.Installer.x64.exe',
+                sha256url='http://download.notepad-plus-plus.org/repository/7.x/7.7.1/npp.7.7.1.checksums.sha256',
+                file='npp.7.7.1.Installer.x64.exe')
 
 
 def append_java(apps: Element):
@@ -75,11 +108,13 @@ def append_java(apps: Element):
         print('ERROR: this should not we printed! :: ecli_elem: ' + str(java_elem) +
               ' :: lateset: ' + str(lateset))
 
-    java_elem = ET.SubElement(apps, Tag.app)
-    java_elem.set(Names.name_key, Names.Java.name)
+    #java_elem = ET.SubElement(apps, Tag.app)
+    #java_elem.set(Names.name_key, Names.Java.name)
+    java_elem = append_app_element(apps, Names.Java.name)
 
-    lateset = ET.SubElement(java_elem, Tag.latest)
-    lateset.text = 'jdk-8.0.242.08-hotspot'
+    #lateset = ET.SubElement(java_elem, Tag.latest)
+    #lateset.text = 'jdk-8.0.242.08-hotspot'
+    append_lateset_element(java_elem, 'jdk-8.0.242.08-hotspot')
 
     # https://adoptopenjdk.net/installation.html#windows-msi
     # https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/tag/jdk8u242-b08
@@ -99,11 +134,13 @@ def append_eclipse(apps: Element):
         lateset = Element()
         print('ERROR: this should not we printed! :: ecli_elem: ' + str(ecli_elem) +
               ' :: lateset: ' + str(lateset))
-    ecli_elem = ET.SubElement(apps, Tag.app)
-    ecli_elem.set(Names.name_key, Names.Eclipse.name)
+    #ecli_elem = ET.SubElement(apps, Tag.app)
+    #ecli_elem.set(Names.name_key, Names.Eclipse.name)
+    ecli_elem = append_app_element(apps, Names.Eclipse.name)
 
-    lateset = ET.SubElement(ecli_elem, Tag.latest)
-    lateset.text = '2019-12'
+    #lateset = ET.SubElement(ecli_elem, Tag.latest)
+    #lateset.text = '2019-12'
+    append_lateset_element(ecli_elem, '2019-12')
 
     versions = ET.SubElement(ecli_elem, Tag.versions)
     set_version(versions,
@@ -124,11 +161,14 @@ def append_eclipse(apps: Element):
 
 def append_plugins(ecli_elem: Element):
     plugins = ET.SubElement(ecli_elem, Tag.plugins)
-    plugin = ET.SubElement(plugins, Tag.plugin)
-    plugin.set(Names.name_key, Names.Eclipse.Plugin.pydev)
 
-    lateset = ET.SubElement(plugin, Tag.latest)
-    lateset.text = '7.5.0'
+    #plugin = ET.SubElement(plugins, Tag.plugin)
+    #plugin.set(Names.name_key, Names.Eclipse.Plugin.pydev)
+    plugin = append_plugin_element(plugins, Names.Eclipse.Plugin.pydev)
+
+    #lateset = ET.SubElement(plugin, Tag.latest)
+    #lateset.text = '7.5.0'
+    append_lateset_element(plugin, '7.5.0')
 
     versions = ET.SubElement(plugin, Tag.versions)
     set_version(versions,
@@ -245,12 +285,17 @@ def parse_apps(elem: Element):
             if not name:
                 print('ERROR: Name is not defined. Skip element.')
             print('name: ' + str(name))
+            parse_app(elem_app, name)
+            '''
             if name == Names.Eclipse.name:
                 parse_app(elem_app, name)
             if name == Names.Java.name:
                 parse_app(elem_app, name)
+            if name == Names.Npp.name:
+                parse_app(elem_app, name)
             else:
                 print('Unhandled app: ' + str(name))
+            '''
         else:
             print('Unhandled tag: ' + str(elem_app.tag))
 
