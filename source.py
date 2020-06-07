@@ -24,6 +24,8 @@ import xml.etree.ElementTree as ET
 from .tag import Tag
 from . import __version__
 from xml.etree.ElementTree import Element
+from .util import logger
+
 
 # TODO: should this be a class ?
 APPS = {
@@ -52,7 +54,8 @@ class Names():
 
 def create_sample(source_file: str):
     file = source_file
-    print('create the sample config XML file: ' + str(file))
+    #print('create the sample config XML file: ' + str(file))
+    logger.info('create the sample config XML file: ' + str(file))
     root = ET.Element(Tag.source)
     tree = ET.ElementTree(root)
     #tree._setroot(root)

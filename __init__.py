@@ -29,3 +29,4 @@ import sys
 assert sys.version_info >= (3, 7)
 
 from . import source
+from .util import logger
