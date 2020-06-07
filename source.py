@@ -54,7 +54,6 @@ class Names():
 
 def create_sample(source_file: str):
     file = source_file
-    #print('create the sample config XML file: ' + str(file))
     logger.info('create the sample config XML file: ' + str(file))
     root = ET.Element(Tag.source)
     tree = ET.ElementTree(root)
@@ -104,19 +103,7 @@ def append_npp(apps: Element):
 
 
 def append_java(apps: Element):
-    # TODO: is there better way to fix Eclipse auto complete ?
-    if False:  # for Eclipse auto complete only :)
-        java_elem = Element()
-        lateset = Element()
-        print('ERROR: this should not we printed! :: ecli_elem: ' + str(java_elem) +
-              ' :: lateset: ' + str(lateset))
-
-    #java_elem = ET.SubElement(apps, Tag.app)
-    #java_elem.set(Names.name_key, Names.Java.name)
     java_elem = append_app_element(apps, Names.Java.name)
-
-    #lateset = ET.SubElement(java_elem, Tag.latest)
-    #lateset.text = 'jdk-8.0.242.08-hotspot'
     append_lateset_element(java_elem, 'jdk-8.0.242.08-hotspot')
 
     # https://adoptopenjdk.net/installation.html#windows-msi
@@ -131,18 +118,7 @@ def append_java(apps: Element):
 
 
 def append_eclipse(apps: Element):
-    # TODO: is there better way to fix Eclipse auto complete ?
-    if False:  # for Eclipse auto complete only :)
-        ecli_elem = Element()
-        lateset = Element()
-        print('ERROR: this should not we printed! :: ecli_elem: ' + str(ecli_elem) +
-              ' :: lateset: ' + str(lateset))
-    #ecli_elem = ET.SubElement(apps, Tag.app)
-    #ecli_elem.set(Names.name_key, Names.Eclipse.name)
     ecli_elem = append_app_element(apps, Names.Eclipse.name)
-
-    #lateset = ET.SubElement(ecli_elem, Tag.latest)
-    #lateset.text = '2019-12'
     append_lateset_element(ecli_elem, '2019-12')
 
     versions = ET.SubElement(ecli_elem, Tag.versions)
@@ -164,13 +140,7 @@ def append_eclipse(apps: Element):
 
 def append_plugins(ecli_elem: Element):
     plugins = ET.SubElement(ecli_elem, Tag.plugins)
-
-    #plugin = ET.SubElement(plugins, Tag.plugin)
-    #plugin.set(Names.name_key, Names.Eclipse.Plugin.pydev)
     plugin = append_plugin_element(plugins, Names.Eclipse.Plugin.pydev)
-
-    #lateset = ET.SubElement(plugin, Tag.latest)
-    #lateset.text = '7.5.0'
     append_lateset_element(plugin, '7.5.0')
 
     versions = ET.SubElement(plugin, Tag.versions)
@@ -204,43 +174,18 @@ def set_version(versions: Element, version: str=None, url: str=None, md5url: str
 
 def set_url(elem: Element, url: str=None):
     create_elem(elem, Tag.url, url)
-    '''
-    if url:
-        url_elem = ET.SubElement(elem, Tag.url)
-        url_elem.text = url
-    '''
 
 def set_md5url(elem: Element, md5url: str=None):
     create_elem(elem, Tag.md5url, md5url)
-    '''
-    if md5url:
-        md5url_elem = ET.SubElement(elem, Tag.md5url)
-        md5url_elem.text = md5url
-    '''
 
 def set_md5sum(elem: Element, md5sum: str=None):
     create_elem(elem, Tag.md5sum, md5sum)
-    '''
-    if md5sum:
-        md5sum_elem = ET.SubElement(elem, Tag.md5sum)
-        md5sum_elem.text = md5sum
-    '''
 
 def set_file(elem: Element, file: str=None):
     create_elem(elem, Tag.file, file)
-    '''
-    if file:
-        file_elem = ET.SubElement(elem, Tag.file)
-        file_elem.text = file
-    '''
-#
+
 def set_sha256url(elem: Element, sha256url: str=None):
     create_elem(elem, Tag.sha256url, sha256url)
-    '''
-    if sha256url:
-        elem = ET.SubElement(elem, Tag.sha256url)
-        elem.text = sha256url
-    '''
 
 def create_elem(elem: Element, tag_name: str=None, text: str=None):
     if not text:
