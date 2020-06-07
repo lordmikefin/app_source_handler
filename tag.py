@@ -9,10 +9,10 @@
        MIT License
 
     License is available online:
-      https://github.com/lordmikefin/update_app_source/blob/master/LICENSE
+      https://github.com/lordmikefin/app_source_handler/blob/master/LICENSE
 
     Latest version of this script file:
-      https://github.com/lordmikefin/update_app_source/blob/master/update_app_source/tag.py
+      https://github.com/lordmikefin/app_source_handler/blob/master/tag.py
 
 
     :copyright: (c) 2020, Mikko Niemelä a.k.a. Lord Mike (lordmike@iki.fi)
