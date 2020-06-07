@@ -261,7 +261,7 @@ def parse_app(elem: Element, name: str):
             parse_plugins(tags_app, plugins_dict)
             eclipse_dict['plugins'] = plugins_dict
         else:
-            print('Unhandled tag: ' + str(tags_app.tag))
+            logger.error('Unhandled tag: ' + str(tags_app.tag))
 
     if eclipse_dict:
         APPS[name] = eclipse_dict
@@ -271,8 +271,8 @@ def parse_versions(elem: Element, versions_dict: dict):
         if elem_ver.tag == Tag.version:
             version = elem_ver.get(Names.version_key, None)
             if not version:
-                print('ERROR: version is not defined. Skip element.')
-            print('version: ' + str(version))
+                logger.error('Version is not defined. Skip element.')
+            logger.info('version: ' + str(version))
             data = {}
             versions_dict[str(version)] = data
             for ver_tag in elem_ver:
@@ -287,9 +287,9 @@ def parse_versions(elem: Element, versions_dict: dict):
                 elif ver_tag.tag == Tag.sha256url:
                     data['sha256url'] = ver_tag.text
                 else:
-                    print('Unhandled tag: ' + str(ver_tag.tag))
+                    logger.error('Unhandled tag: ' + str(ver_tag.tag))
         else:
-            print('Unhandled tag: ' + str(elem_ver.tag))
+            logger.error('Unhandled tag: ' + str(elem_ver.tag))
 
 def parse_plugins(elem: Element, plugins_dict: dict):
     for elem_plug in elem:
@@ -297,8 +297,8 @@ def parse_plugins(elem: Element, plugins_dict: dict):
             #plugin.set(Names.name_key, Names.Eclipse.Plugin.pydev)
             name = elem_plug.get(Names.name_key, None)
             if not name:
-                print('ERROR: Name is not defined. Skip element.')
-            print('name: ' + str(name))
+                logger.error('Name is not defined. Skip element.')
+            logger.info('Name: ' + str(name))
             if name == Names.Eclipse.Plugin.pydev:
                 pydev_dict = dict(plugins_dict.get(name, {}))
                 for tags_plug in elem_plug:
@@ -310,12 +310,12 @@ def parse_plugins(elem: Element, plugins_dict: dict):
                         parse_versions(tags_plug, versions_dict)
                         pydev_dict['versions'] = versions_dict
                     else:
-                        print('Unhandled tag: ' + str(tags_plug.tag))
+                        logger.error('Unhandled tag: ' + str(tags_plug.tag))
     
                 if pydev_dict:
                     plugins_dict[name] = pydev_dict
         else:
-            print('Unhandled tag: ' + str(elem_plug.tag))
+            logger.error('Unhandled tag: ' + str(elem_plug.tag))
 
 def indent(elem, level=0):
     ''' Indent the xml tree '''
