@@ -197,9 +197,9 @@ def parse(source_file: str):
     # TODO: is there better way to fix Eclipse auto complete ?
     if False:  # for Eclipse auto complete only :)
         elem = Element()
-        print('ERROR: this should not we printed! :: elem: ' + str(elem))
-    #global APPS
-    print('parse the source XML file')
+        logger.error('This should not we printed! :: elem: ' + str(elem))
+
+    logger.info('Parse the source XML file')
     file = source_file
     tree = ET.parse(file)
     root = tree.getroot()
@@ -208,20 +208,17 @@ def parse(source_file: str):
         if elem.tag == Tag.version:
             is_version = True
             version = elem.text
-            print('source XML file version: ' + str(version))
+            logger.info('Source XML file version: ' + str(version))
             # TODO: do real version comparsion
             if version != __version__:
-                # TODO: log warnings.
-                print('WARNING: version different.')
+                logger.warning('Version different.')
         elif elem.tag == Tag.apps:
-            #eclipse_list = list(APPS.get('eclipse', []))
             parse_apps(elem)
-            #APPS['eclipse'] = eclipse_list
         else:
-            print('Unhandled tag: ' + str(elem.tag))
+            logger.error('Unhandled tag: ' + str(elem.tag))
 
     if not is_version:
-        print('ERROR: source XML file version must be defined.')
+        logger.error('Source XML file version must be defined.')
 
 def parse_apps(elem: Element):
     global APPS
@@ -231,8 +228,8 @@ def parse_apps(elem: Element):
             #ecli_elem.set(Names.name_key, Names.Eclipse.name)
             name = elem_app.get(Names.name_key, None)
             if not name:
-                print('ERROR: Name is not defined. Skip element.')
-            print('name: ' + str(name))
+                logger.error('Name is not defined. Skip element.')
+            logger.info('name: ' + str(name))
             parse_app(elem_app, name)
             '''
             if name == Names.Eclipse.name:
@@ -245,7 +242,7 @@ def parse_apps(elem: Element):
                 print('Unhandled app: ' + str(name))
             '''
         else:
-            print('Unhandled tag: ' + str(elem_app.tag))
+            logger.error('Unhandled tag: ' + str(elem_app.tag))
 
 def parse_app(elem: Element, name: str):
     global APPS
