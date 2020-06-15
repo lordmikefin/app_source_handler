@@ -99,6 +99,7 @@ def append_npp(apps: Element):
                 version='7.7.1',
                 url='http://download.notepad-plus-plus.org/repository/7.x/7.7.1/npp.7.7.1.Installer.x64.exe',
                 sha256url='http://download.notepad-plus-plus.org/repository/7.x/7.7.1/npp.7.7.1.checksums.sha256',
+                sha256file='npp.7.7.1.checksums.sha256',
                 file='npp.7.7.1.Installer.x64.exe')
 
 
@@ -113,6 +114,7 @@ def append_java(apps: Element):
                 version='jdk-8.0.242.08-hotspot',
                 url='https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u242-b08/OpenJDK8U-jdk_x64_windows_hotspot_8u242b08.msi',
                 sha256url='https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u242-b08/OpenJDK8U-jdk_x64_windows_hotspot_8u242b08.msi.sha256.txt',
+                sha256file='OpenJDK8U-jdk_x64_windows_hotspot_8u242b08.msi.sha256.txt',
                 #md5sum='7b97b5c42cb30f36f14b8c90342a9e55',
                 file='OpenJDK8U-jdk_x64_windows_hotspot_8u242b08.msi')
 
@@ -126,6 +128,7 @@ def append_eclipse(apps: Element):
                 version='2019-09',
                 url='https://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/2019-09/R/eclipse-javascript-2019-09-R-win32-x86_64.zip',
                 md5url='https://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/2019-09/R/eclipse-javascript-2019-09-R-win32-x86_64.zip.md5',
+                md5file='eclipse-javascript-2019-09-R-win32-x86_64.zip.md5',
                 md5sum='7b97b5c42cb30f36f14b8c90342a9e55',
                 file='eclipse-javascript-2019-09-R-win32-x86_64.zip')
 
@@ -133,6 +136,7 @@ def append_eclipse(apps: Element):
                 version='2019-12',
                 url='https://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/2019-12/R/eclipse-javascript-2019-12-R-win32-x86_64.zip',
                 md5url='https://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/2019-12/R/eclipse-javascript-2019-12-R-win32-x86_64.zip.md5',
+                md5file='eclipse-javascript-2019-12-R-win32-x86_64.zip.md5',
                 #md5sum='7b97b5c42cb30f36f14b8c90342a9e55',
                 file='eclipse-javascript-2019-12-R-win32-x86_64.zip')
 
@@ -147,19 +151,21 @@ def append_plugins(ecli_elem: Element):
     set_version(versions,
                 version='7.4.0',
                 url='https://sourceforge.net/projects/pydev/files/pydev/PyDev%207.4.0/PyDev 7.4.0.zip/download',
-                # md5url='https://...',  # TODO: does sourceforge provide the sm5 file?
+                # md5url='https://...',  # TODO: does sourceforge provide the md5 file?
                 md5sum='722dfe4a9bf1f50a2766c4d58eb6dd4d',
                 file='PyDev 7.4.0.zip')
 
     set_version(versions,
                 version='7.5.0',
                 url='https://sourceforge.net/projects/pydev/files/pydev/PyDev%207.5.0/PyDev 7.5.0.zip/download',
-                # md5url='https://...',  # TODO: does sourceforge provide the sm5 file?
+                # md5url='https://...',  # TODO: does sourceforge provide the md5 file?
                 md5sum='ca391869d7d9358cab4e2e162a03b57f',
                 file='PyDev 7.5.0.zip')
 
-def set_version(versions: Element, version: str=None, url: str=None, md5url: str=None,
-                md5sum: str=None, file: str=None, sha256url: str=None):
+def set_version(versions: Element, version: str=None, url: str=None,
+                md5sum: str=None, file: str=None,
+                md5url: str=None, md5file: str=None,
+                sha256url: str=None, sha256file: str=None):
     #versions = ET.SubElement(elem, Tag.versions)
     if not version:
         return  # noting to do
@@ -167,16 +173,17 @@ def set_version(versions: Element, version: str=None, url: str=None, md5url: str
     #version_elem.text = '2019-09'
     version_elem.set(Names.version_key, version)
     set_url(version_elem, url)
-    set_md5url(version_elem, md5url)
+    set_md5url(version_elem, md5url, md5file)
     set_md5sum(version_elem, md5sum)
     set_file(version_elem, file)
-    set_sha256url(version_elem, sha256url) 
+    set_sha256url(version_elem, sha256url, sha256file)
 
 def set_url(elem: Element, url: str=None):
     create_elem(elem, Tag.url, url)
 
-def set_md5url(elem: Element, md5url: str=None):
+def set_md5url(elem: Element, md5url: str=None, md5file: str=None):
     create_elem(elem, Tag.md5url, md5url)
+    create_elem(elem, Tag.md5file, md5file)
 
 def set_md5sum(elem: Element, md5sum: str=None):
     create_elem(elem, Tag.md5sum, md5sum)
@@ -184,8 +191,9 @@ def set_md5sum(elem: Element, md5sum: str=None):
 def set_file(elem: Element, file: str=None):
     create_elem(elem, Tag.file, file)
 
-def set_sha256url(elem: Element, sha256url: str=None):
+def set_sha256url(elem: Element, sha256url: str=None, sha256file: str=None):
     create_elem(elem, Tag.sha256url, sha256url)
+    create_elem(elem, Tag.sha256file, sha256file)
 
 def create_elem(elem: Element, tag_name: str=None, text: str=None):
     if not text:
@@ -278,14 +286,18 @@ def parse_versions(elem: Element, versions_dict: dict):
             for ver_tag in elem_ver:
                 if ver_tag.tag == Tag.url:
                     data['url'] = ver_tag.text
-                elif ver_tag.tag == Tag.md5url:
-                    data['md5url'] = ver_tag.text
-                elif ver_tag.tag == Tag.md5sum:
-                    data['md5sum'] = ver_tag.text
                 elif ver_tag.tag == Tag.file:
                     data['file'] = ver_tag.text
+                elif ver_tag.tag == Tag.md5url:
+                    data['md5url'] = ver_tag.text
+                elif ver_tag.tag == Tag.md5file:
+                    data['md5file'] = ver_tag.text
+                elif ver_tag.tag == Tag.md5sum:
+                    data['md5sum'] = ver_tag.text
                 elif ver_tag.tag == Tag.sha256url:
                     data['sha256url'] = ver_tag.text
+                elif ver_tag.tag == Tag.sha256file:
+                    data['sha256file'] = ver_tag.text
                 else:
                     logger.error('Unhandled tag: ' + str(ver_tag.tag))
         else:

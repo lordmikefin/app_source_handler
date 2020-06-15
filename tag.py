@@ -32,7 +32,10 @@ class Tag():
     latest = 'latest'
     versions = 'versions'
     url = 'url'
-    md5url = 'md5url'
-    md5sum = 'md5sum'
     file = 'file'
+
+    md5url = 'md5url'
+    md5file = 'md5file'
+    md5sum = 'md5sum'
     sha256url = 'sha256url'
+    sha256file = 'sha256file'
