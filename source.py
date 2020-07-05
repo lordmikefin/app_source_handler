@@ -129,7 +129,7 @@ def append_eclipse(apps: Element):
                 url='https://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/2019-09/R/eclipse-javascript-2019-09-R-win32-x86_64.zip',
                 md5url='https://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/2019-09/R/eclipse-javascript-2019-09-R-win32-x86_64.zip.md5',
                 md5file='eclipse-javascript-2019-09-R-win32-x86_64.zip.md5',
-                md5sum='7b97b5c42cb30f36f14b8c90342a9e55',
+                #md5sum='7b97b5c42cb30f36f14b8c90342a9e55',
                 file='eclipse-javascript-2019-09-R-win32-x86_64.zip')
 
     set_version(versions,
