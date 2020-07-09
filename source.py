@@ -26,6 +26,7 @@ from . import __version__
 from xml.etree.ElementTree import Element
 from .util import logger
 import LMToyBoxPython
+from pathlib import Path
 
 
 # TODO: should this be a class ?
@@ -78,9 +79,11 @@ def create_sum_file(sum_file: str, source_file: str):
     sha256sum = LMToyBoxPython.sha256(source_file, show_progress=True)
     logger.debug('sha256sum: ' + str(sha256sum))
 
-    # TODO: How properly format sha256 file? Write line into the file :)
     lines = []
-    line = sha256sum
+    file = Path(source_file)
+    file_name = file.name
+    # NOTE: sha256 file format is mimicked from npp.7.7.1.checksums.sha256
+    line = sha256sum + '  ' + file_name + '\n'
     lines.append(line)
     LMToyBoxPython.write_lines_to_file(sum_file, lines)
 
