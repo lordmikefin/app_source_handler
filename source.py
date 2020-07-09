@@ -82,8 +82,7 @@ def create_sum_file(sum_file: str, source_file: str):
     lines = []
     line = sha256sum
     lines.append(line)
-    with open(sum_file, 'w') as f:
-        f.writelines(lines)
+    LMToyBoxPython.write_lines_to_file(sum_file, lines)
 
 
 def append_app_element(parent: Element, elem_name: str) -> Element:
