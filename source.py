@@ -25,6 +25,7 @@ from .tag import Tag
 from . import __version__
 from xml.etree.ElementTree import Element
 from .util import logger
+import LMToyBoxPython
 
 
 # TODO: should this be a class ?
@@ -52,8 +53,7 @@ class Names():
         name = 'npp'
 
 
-def create_sample(source_file: str):
-    file = source_file
+def create_sample(file: str):
     logger.info('create the sample config XML file: ' + str(file))
     root = ET.Element(Tag.source)
     tree = ET.ElementTree(root)
@@ -71,7 +71,19 @@ def create_sample(source_file: str):
 
     indent(root)
     tree.write(file, encoding="UTF-8", xml_declaration=True)
-    # TODO: create md5 file
+
+
+def create_sum_file(sum_file: str, source_file: str):
+    logger.info('Creating hash sum file: ' + str(sum_file))
+    sha256sum = LMToyBoxPython.sha256(source_file, show_progress=True)
+    logger.debug('sha256sum: ' + str(sha256sum))
+
+    # TODO: How properly format sha256 file? Write line into the file :)
+    lines = []
+    line = sha256sum
+    lines.append(line)
+    with open(sum_file, 'w') as f:
+        f.writelines(lines)
 
 
 def append_app_element(parent: Element, elem_name: str) -> Element:
