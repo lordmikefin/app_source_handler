@@ -71,7 +71,16 @@ def create_sample(file: str):
     append_npp(apps)
 
     indent(root)
-    tree.write(file, encoding="UTF-8", xml_declaration=True)
+    # NOTE: ElementTree.write() will use new line cgar CRLF but git repo has line ending LF
+    #tree.write(file, encoding="UTF-8", xml_declaration=True)
+    '''
+    # NOTE: copied from ElementTree module _get_writer(...) -function
+    #       This does not work -> byte writer is expected by ElementTree._get_writer()
+    file_objects = open(file, "w", encoding="UTF-8", newline='\n',
+                        errors="xmlcharrefreplace")
+    '''
+    file_objects = open(file, "wb")
+    tree.write(file_objects, encoding="UTF-8", xml_declaration=True)
 
 
 def create_sum_file(sum_file: str, source_file: str):
