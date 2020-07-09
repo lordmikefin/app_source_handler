@@ -80,6 +80,9 @@ def create_sample(file: str):
                         errors="xmlcharrefreplace")
     '''
     file_objects = open(file, "wb")
+    # TODO: ElementTree.write() -function should have parameter 'newline' and it should be passed to _get_writer() -function
+    # TODO: Send request to ElementTree toolkit project. Python core project?
+    #   https://docs.python.org/3/library/xml.etree.elementtree.html
     tree.write(file_objects, encoding="UTF-8", xml_declaration=True)
 
 
