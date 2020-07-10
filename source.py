@@ -34,6 +34,7 @@ APPS = {
     'eclipse': {},
     'java': {},
     'npp': {},
+    'putty': {},
     }
 
 
@@ -357,6 +358,8 @@ def parse_plugins(elem: Element, plugins_dict: dict):
 
 def indent(elem, level=0):
     ''' Indent the xml tree '''
+    LMToyBoxPython.indent(elem, level)
+    '''
     # TODO: this should be part of 'xml.etree.ElementTree'
     # NOTE: Copied from 'setup_apps'  :)
     # TODO: Create common code base! And move this there.
@@ -376,3 +379,4 @@ def indent(elem, level=0):
     else:
         if level and (not elem.tail or not elem.tail.strip()):
             elem.tail = i
+    '''
