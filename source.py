@@ -54,6 +54,9 @@ class Names():
     class Npp():
         name = 'npp'
 
+    class Putty():
+        name = 'putty'
+
 
 def create_sample(file: str):
     logger.info('create the sample config XML file: ' + str(file))
@@ -70,6 +73,7 @@ def create_sample(file: str):
     append_eclipse(apps)
     append_java(apps)
     append_npp(apps)
+    append_putty(apps)
 
     indent(root)
     # NOTE: ElementTree.write() will use new line cgar CRLF but git repo has line ending LF
@@ -117,6 +121,19 @@ def append_lateset_element(elem: Element, text: str):
     lateset = ET.SubElement(elem, Tag.latest)
     lateset.text = text
 
+
+def append_putty(apps: Element):
+    npp_elem = append_app_element(apps, Names.Putty.name)
+    append_lateset_element(npp_elem, '0.73')
+    versions = ET.SubElement(npp_elem, Tag.versions)
+    # TODO: Is there hash sum file for Putty? There is .gpg file. Can it used for verification?
+    # https://fileinfo.com/extension/gpg
+    set_version(versions,
+                version='0.73',
+                #url='https://the.earth.li/~sgtatham/putty/latest/w64/putty-64bit-0.73-installer.msi',
+                url='https://the.earth.li/~sgtatham/putty/0.73/w64/putty-64bit-0.73-installer.msi',
+                file='putty-64bit-0.73-installer.msi',
+                md5sum='a64da9e511b07f7deab633fb64b6535f')
 
 def append_npp(apps: Element):
     npp_elem = append_app_element(apps, Names.Npp.name)
