@@ -36,6 +36,7 @@ APPS = {
     'npp': {},
     'putty': {},
     'python': {},
+    'git': {},
     }
 
 
@@ -61,6 +62,9 @@ class Names():
     class Python():
         name = 'python'
 
+    class Git():
+        name = 'git'
+
 
 def create_sample(file: str):
     logger.info('create the sample config XML file: ' + str(file))
@@ -79,6 +83,7 @@ def create_sample(file: str):
     append_npp(apps)
     append_putty(apps)
     append_python(apps)
+    append_git(apps)
 
     indent(root)
     # NOTE: ElementTree.write() will use new line cgar CRLF but git repo has line ending LF
@@ -126,6 +131,17 @@ def append_lateset_element(elem: Element, text: str):
     lateset = ET.SubElement(elem, Tag.latest)
     lateset.text = text
 
+
+def append_git(apps: Element):
+    elem = append_app_element(apps, Names.Git.name)
+    append_lateset_element(elem, '2.24.1')
+    versions = ET.SubElement(elem, Tag.versions)
+    set_version(versions,
+                version='2.24.1',
+                url='https://github.com/git-for-windows/git/releases/download/v2.24.1.windows.2/Git-2.24.1.2-64-bit.exe',
+                file='Git-2.24.1.2-64-bit.exe',
+                # TODO: how to auto pick hash sum from google web page? https://github.com/git-for-windows/git/releases/
+                sha256sum='34e484936105713e7d0c2f421bf62e4cfe652f6638a9ecb5df2186c1918753e2')
 
 def append_python(apps: Element):
     elem = append_app_element(apps, Names.Python.name)
@@ -225,7 +241,8 @@ def append_plugins(ecli_elem: Element):
 def set_version(versions: Element, version: str=None, url: str=None,
                 md5sum: str=None, file: str=None,
                 md5url: str=None, md5file: str=None,
-                sha256url: str=None, sha256file: str=None):
+                sha256url: str=None, sha256file: str=None,
+                sha256sum: str=None):
     #versions = ET.SubElement(elem, Tag.versions)
     if not version:
         return  # noting to do
@@ -237,6 +254,7 @@ def set_version(versions: Element, version: str=None, url: str=None,
     set_md5sum(version_elem, md5sum)
     set_file(version_elem, file)
     set_sha256url(version_elem, sha256url, sha256file)
+    set_sha256sum(version_elem, sha256sum)
 
 def set_url(elem: Element, url: str=None):
     create_elem(elem, Tag.url, url)
@@ -244,6 +262,9 @@ def set_url(elem: Element, url: str=None):
 def set_md5url(elem: Element, md5url: str=None, md5file: str=None):
     create_elem(elem, Tag.md5url, md5url)
     create_elem(elem, Tag.md5file, md5file)
+
+def set_sha256sum(elem: Element, sha256sum: str=None):
+    create_elem(elem, Tag.sha256sum, sha256sum)
 
 def set_md5sum(elem: Element, md5sum: str=None):
     create_elem(elem, Tag.md5sum, md5sum)
@@ -358,6 +379,8 @@ def parse_versions(elem: Element, versions_dict: dict):
                     data['sha256url'] = ver_tag.text
                 elif ver_tag.tag == Tag.sha256file:
                     data['sha256file'] = ver_tag.text
+                elif ver_tag.tag == Tag.sha256sum:
+                    data['sha256sum'] = ver_tag.text
                 else:
                     logger.error('Unhandled tag: ' + str(ver_tag.tag))
         else:

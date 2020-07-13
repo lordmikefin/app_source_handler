@@ -39,3 +39,4 @@ class Tag():
     md5sum = 'md5sum'
     sha256url = 'sha256url'
     sha256file = 'sha256file'
+    sha256sum = 'sha256sum'
