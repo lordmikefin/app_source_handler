@@ -35,6 +35,7 @@ APPS = {
     'java': {},
     'npp': {},
     'putty': {},
+    'python': {},
     }
 
 
@@ -57,6 +58,9 @@ class Names():
     class Putty():
         name = 'putty'
 
+    class Python():
+        name = 'python'
+
 
 def create_sample(file: str):
     logger.info('create the sample config XML file: ' + str(file))
@@ -74,6 +78,7 @@ def create_sample(file: str):
     append_java(apps)
     append_npp(apps)
     append_putty(apps)
+    append_python(apps)
 
     indent(root)
     # NOTE: ElementTree.write() will use new line cgar CRLF but git repo has line ending LF
@@ -121,6 +126,17 @@ def append_lateset_element(elem: Element, text: str):
     lateset = ET.SubElement(elem, Tag.latest)
     lateset.text = text
 
+
+def append_python(apps: Element):
+    elem = append_app_element(apps, Names.Python.name)
+    append_lateset_element(elem, '3.8.1')
+    versions = ET.SubElement(elem, Tag.versions)
+    set_version(versions,
+                version='3.8.1',
+                url='https://www.python.org/ftp/python/3.8.1/python-3.8.1-amd64.exe',
+                file='python-3.8.1-amd64.exe',
+                # TODO: how to use python-3.8.1-amd64.exe.asc 'GnuPG' file for verification
+                md5sum='3e4c42f5ff8fcdbe6a828c912b7afdb1')
 
 def append_putty(apps: Element):
     npp_elem = append_app_element(apps, Names.Putty.name)
