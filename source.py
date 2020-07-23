@@ -37,7 +37,17 @@ APPS = {
     'putty': {},
     'python': {},
     'git': {},
+    'winmerge': {},
     }
+
+
+# TODO: add WinMerge   https://winmerge.org/
+# https://winmerge.org/downloads/
+# https://downloads.sourceforge.net/winmerge/WinMerge-2.16.6-Setup.exe
+# SHA-256 Checksums
+# WinMerge-2.16.6-Setup.exe
+#    b55de4fc99487e99ecb271a62e13ed6808b9ba3a96bf7d6b65cbee707b16fff1
+
 
 
 class Names():
@@ -64,6 +74,9 @@ class Names():
 
     class Git():
         name = 'git'
+
+    class Winmerge():
+        name = 'winmerge'
 
 
 def create_sample(file: str):
