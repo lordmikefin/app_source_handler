@@ -98,7 +98,7 @@ def create_sample(file: str):
     append_python(apps)
     append_git(apps)
 
-    indent(root)
+    LMToyBoxPython.indent(root)
     # NOTE: ElementTree.write() will use new line cgar CRLF but git repo has line ending LF
     #tree.write(file, encoding="UTF-8", xml_declaration=True)
     '''
@@ -424,28 +424,3 @@ def parse_plugins(elem: Element, plugins_dict: dict):
                     plugins_dict[name] = pydev_dict
         else:
             logger.error('Unhandled tag: ' + str(elem_plug.tag))
-
-def indent(elem, level=0):
-    ''' Indent the xml tree '''
-    LMToyBoxPython.indent(elem, level)
-    '''
-    # TODO: this should be part of 'xml.etree.ElementTree'
-    # NOTE: Copied from 'setup_apps'  :)
-    # TODO: Create common code base! And move this there.
-
-    # NOTE: code copied from stackoverflow
-    # https://stackoverflow.com/questions/3095434/inserting-newlines-in-xml-file-generated-via-xml-etree-elementtree-in-python
-    i = "\n" + level*"  "
-    if len(elem):
-        if not elem.text or not elem.text.strip():
-            elem.text = i + "  "
-        if not elem.tail or not elem.tail.strip():
-            elem.tail = i
-        for elem in elem:
-            indent(elem, level+1)
-        if not elem.tail or not elem.tail.strip():
-            elem.tail = i
-    else:
-        if level and (not elem.tail or not elem.tail.strip()):
-            elem.tail = i
-    '''
