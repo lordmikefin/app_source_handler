@@ -27,6 +27,7 @@ from xml.etree.ElementTree import Element
 from .util import logger
 import LMToyBoxPython
 from pathlib import Path
+from LMToyBoxPython import LMetree
 
 
 # TODO: should this be a class ?
@@ -98,7 +99,7 @@ def create_sample(file: str):
     append_python(apps)
     append_git(apps)
 
-    LMToyBoxPython.indent(root)
+    LMetree.indent(root)
     # NOTE: ElementTree.write() will use new line cgar CRLF but git repo has line ending LF
     #tree.write(file, encoding="UTF-8", xml_declaration=True)
     '''
