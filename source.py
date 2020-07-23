@@ -27,7 +27,7 @@ from xml.etree.ElementTree import Element
 from .util import logger
 import LMToyBoxPython
 from pathlib import Path
-from LMToyBoxPython import LMetree
+from LMToyBoxPython import LMetree, LMhashlib
 
 
 # TODO: should this be a class ?
@@ -117,7 +117,7 @@ def create_sample(file: str):
 
 def create_sum_file(sum_file: str, source_file: str):
     logger.info('Creating hash sum file: ' + str(sum_file))
-    sha256sum = LMToyBoxPython.sha256(source_file, show_progress=True)
+    sha256sum = LMhashlib.sha256(source_file, show_progress=True)
     logger.debug('sha256sum: ' + str(sha256sum))
 
     lines = []
