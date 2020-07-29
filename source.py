@@ -42,15 +42,6 @@ APPS = {
     }
 
 
-# TODO: add WinMerge   https://winmerge.org/
-# https://winmerge.org/downloads/
-# https://downloads.sourceforge.net/winmerge/WinMerge-2.16.6-Setup.exe
-# SHA-256 Checksums
-# WinMerge-2.16.6-Setup.exe
-#    b55de4fc99487e99ecb271a62e13ed6808b9ba3a96bf7d6b65cbee707b16fff1
-
-
-
 class Names():
     name_key = 'name'
     version_key = 'string'
@@ -96,6 +87,7 @@ def create_sample(file: str):
     append_putty(apps)
     append_python(apps)
     append_git(apps)
+    append_winmerge(apps)
 
     LMetree.indent(root)
     # NOTE: ElementTree.write() will use new line cgar CRLF but git repo has line ending LF
@@ -142,6 +134,17 @@ def append_plugin_element(parent: Element, elem_name: str) -> Element:
 def append_lateset_element(elem: Element, text: str):
     LMetree.create_subelem(elem, Tag.latest, text)
 
+
+def append_winmerge(apps: Element):
+    elem = append_app_element(apps, Names.Winmerge.name)
+    append_lateset_element(elem, '2.16.6')
+    versions = ET.SubElement(elem, Tag.versions)
+    set_version(versions,
+                version='2.16.6',
+                url='https://downloads.sourceforge.net/winmerge/WinMerge-2.16.6-Setup.exe',
+                file='WinMerge-2.16.6-Setup.exe',
+                # TODO: how to auto pick hash sum from web page?
+                sha256sum='b55de4fc99487e99ecb271a62e13ed6808b9ba3a96bf7d6b65cbee707b16fff1')
 
 def append_git(apps: Element):
     elem = append_app_element(apps, Names.Git.name)
