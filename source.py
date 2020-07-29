@@ -87,9 +87,7 @@ def create_sample(file: str):
     #tree._setroot(root)
 
     root.append(ET.Comment(' Supported version of "app_source" '))
-
-    version = ET.SubElement(root, Tag.version)
-    version.text = __version__
+    LMetree.create_subelem(root, Tag.version, __version__)
 
     apps = ET.SubElement(root, Tag.apps)
     append_eclipse(apps)
@@ -142,8 +140,7 @@ def append_plugin_element(parent: Element, elem_name: str) -> Element:
 
 
 def append_lateset_element(elem: Element, text: str):
-    lateset = ET.SubElement(elem, Tag.latest)
-    lateset.text = text
+    LMetree.create_subelem(elem, Tag.latest, text)
 
 
 def append_git(apps: Element):
