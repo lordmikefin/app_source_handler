@@ -271,30 +271,25 @@ def set_version(versions: Element, version: str=None, url: str=None,
     set_sha256sum(version_elem, sha256sum)
 
 def set_url(elem: Element, url: str=None):
-    create_elem(elem, Tag.url, url)
+    LMetree.create_subelem(elem, Tag.url, url)
 
 def set_md5url(elem: Element, md5url: str=None, md5file: str=None):
-    create_elem(elem, Tag.md5url, md5url)
-    create_elem(elem, Tag.md5file, md5file)
+    LMetree.create_subelem(elem, Tag.md5url, md5url)
+    LMetree.create_subelem(elem, Tag.md5file, md5file)
 
 def set_sha256sum(elem: Element, sha256sum: str=None):
-    create_elem(elem, Tag.sha256sum, sha256sum)
+    LMetree.create_subelem(elem, Tag.sha256sum, sha256sum)
 
 def set_md5sum(elem: Element, md5sum: str=None):
-    create_elem(elem, Tag.md5sum, md5sum)
+    LMetree.create_subelem(elem, Tag.md5sum, md5sum)
 
 def set_file(elem: Element, file: str=None):
-    create_elem(elem, Tag.file, file)
+    LMetree.create_subelem(elem, Tag.file, file)
 
 def set_sha256url(elem: Element, sha256url: str=None, sha256file: str=None):
-    create_elem(elem, Tag.sha256url, sha256url)
-    create_elem(elem, Tag.sha256file, sha256file)
+    LMetree.create_subelem(elem, Tag.sha256url, sha256url)
+    LMetree.create_subelem(elem, Tag.sha256file, sha256file)
 
-def create_elem(elem: Element, tag_name: str=None, text: str=None):
-    if not text:
-        return  # do not create empty element
-    elem = ET.SubElement(elem, tag_name)
-    elem.text = text
 
 def parse(source_file: str):
     # TODO: is there better way to fix Eclipse auto complete ?
