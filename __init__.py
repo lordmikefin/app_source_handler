@@ -20,14 +20,14 @@
 """
 
 __license__ = "MIT License"
-__version__ = "0.0.18"
-__revision__ = "app_source_handler (module)  v" + __version__ + " (2020-07-29)"
+__version__ = "0.1.0"
+__revision__ = "app_source_handler (module)  v" + __version__ + " (2020-08-23)"
 
 import sys
 
 # NOTE: This code is tested only with Python version 3.7
 # NOTE: ubuntu 16 has only python 3.5
-assert sys.version_info >= (3, )
+assert sys.version_info >= (3, 5)
 
 from . import source
 from .util import logger
