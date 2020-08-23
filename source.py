@@ -28,7 +28,10 @@ from .util import logger
 import LMToyBoxPython
 from pathlib import Path
 from LMToyBoxPython import LMetree, LMhashlib
+import sys
 
+OS_WINDOWS = 'win32'
+OS_LINUX = 'linux'
 
 # TODO: should this be a class ?
 APPS = {
@@ -144,7 +147,8 @@ def append_winmerge(apps: Element):
                 url='https://downloads.sourceforge.net/winmerge/WinMerge-2.16.6-Setup.exe',
                 file='WinMerge-2.16.6-Setup.exe',
                 # TODO: how to auto pick hash sum from web page?
-                sha256sum='b55de4fc99487e99ecb271a62e13ed6808b9ba3a96bf7d6b65cbee707b16fff1')
+                sha256sum='b55de4fc99487e99ecb271a62e13ed6808b9ba3a96bf7d6b65cbee707b16fff1',
+                platform=OS_WINDOWS)
 
 def append_git(apps: Element):
     elem = append_app_element(apps, Names.Git.name)
@@ -155,7 +159,8 @@ def append_git(apps: Element):
                 url='https://github.com/git-for-windows/git/releases/download/v2.24.1.windows.2/Git-2.24.1.2-64-bit.exe',
                 file='Git-2.24.1.2-64-bit.exe',
                 # TODO: how to auto pick hash sum from google web page? https://github.com/git-for-windows/git/releases/
-                sha256sum='34e484936105713e7d0c2f421bf62e4cfe652f6638a9ecb5df2186c1918753e2')
+                sha256sum='34e484936105713e7d0c2f421bf62e4cfe652f6638a9ecb5df2186c1918753e2',
+                platform=OS_WINDOWS)
 
 def append_python(apps: Element):
     elem = append_app_element(apps, Names.Python.name)
@@ -166,7 +171,8 @@ def append_python(apps: Element):
                 url='https://www.python.org/ftp/python/3.8.1/python-3.8.1-amd64.exe',
                 file='python-3.8.1-amd64.exe',
                 # TODO: how to use python-3.8.1-amd64.exe.asc 'GnuPG' file for verification
-                md5sum='3e4c42f5ff8fcdbe6a828c912b7afdb1')
+                md5sum='3e4c42f5ff8fcdbe6a828c912b7afdb1',
+                platform=OS_WINDOWS)
 
 def append_putty(apps: Element):
     npp_elem = append_app_element(apps, Names.Putty.name)
@@ -179,7 +185,8 @@ def append_putty(apps: Element):
                 #url='https://the.earth.li/~sgtatham/putty/latest/w64/putty-64bit-0.73-installer.msi',
                 url='https://the.earth.li/~sgtatham/putty/0.73/w64/putty-64bit-0.73-installer.msi',
                 file='putty-64bit-0.73-installer.msi',
-                md5sum='a64da9e511b07f7deab633fb64b6535f')
+                md5sum='a64da9e511b07f7deab633fb64b6535f',
+                platform=OS_WINDOWS)
 
 def append_npp(apps: Element):
     npp_elem = append_app_element(apps, Names.Npp.name)
@@ -190,7 +197,8 @@ def append_npp(apps: Element):
                 url='http://download.notepad-plus-plus.org/repository/7.x/7.7.1/npp.7.7.1.Installer.x64.exe',
                 sha256url='http://download.notepad-plus-plus.org/repository/7.x/7.7.1/npp.7.7.1.checksums.sha256',
                 sha256file='npp.7.7.1.checksums.sha256',
-                file='npp.7.7.1.Installer.x64.exe')
+                file='npp.7.7.1.Installer.x64.exe',
+                platform=OS_WINDOWS)
 
 
 def append_java(apps: Element):
@@ -206,7 +214,8 @@ def append_java(apps: Element):
                 sha256url='https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u242-b08/OpenJDK8U-jdk_x64_windows_hotspot_8u242b08.msi.sha256.txt',
                 sha256file='OpenJDK8U-jdk_x64_windows_hotspot_8u242b08.msi.sha256.txt',
                 #md5sum='7b97b5c42cb30f36f14b8c90342a9e55',
-                file='OpenJDK8U-jdk_x64_windows_hotspot_8u242b08.msi')
+                file='OpenJDK8U-jdk_x64_windows_hotspot_8u242b08.msi',
+                platform=OS_WINDOWS)
 
 
 def append_eclipse(apps: Element):
@@ -220,7 +229,8 @@ def append_eclipse(apps: Element):
                 md5url='https://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/2019-09/R/eclipse-javascript-2019-09-R-win32-x86_64.zip.md5',
                 md5file='eclipse-javascript-2019-09-R-win32-x86_64.zip.md5',
                 #md5sum='7b97b5c42cb30f36f14b8c90342a9e55',
-                file='eclipse-javascript-2019-09-R-win32-x86_64.zip')
+                file='eclipse-javascript-2019-09-R-win32-x86_64.zip',
+                platform=OS_WINDOWS)
 
     set_version(versions,
                 version='2019-12',
@@ -228,7 +238,8 @@ def append_eclipse(apps: Element):
                 md5url='https://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/2019-12/R/eclipse-javascript-2019-12-R-win32-x86_64.zip.md5',
                 md5file='eclipse-javascript-2019-12-R-win32-x86_64.zip.md5',
                 #md5sum='7b97b5c42cb30f36f14b8c90342a9e55',
-                file='eclipse-javascript-2019-12-R-win32-x86_64.zip')
+                file='eclipse-javascript-2019-12-R-win32-x86_64.zip',
+                platform=OS_WINDOWS)
 
     append_plugins(ecli_elem)
 
@@ -243,32 +254,37 @@ def append_plugins(ecli_elem: Element):
                 url='https://sourceforge.net/projects/pydev/files/pydev/PyDev%207.4.0/PyDev 7.4.0.zip/download',
                 # md5url='https://...',  # TODO: does sourceforge provide the md5 file?
                 md5sum='722dfe4a9bf1f50a2766c4d58eb6dd4d',
-                file='PyDev 7.4.0.zip')
+                file='PyDev 7.4.0.zip',
+                platform=OS_WINDOWS)
 
     set_version(versions,
                 version='7.5.0',
                 url='https://sourceforge.net/projects/pydev/files/pydev/PyDev%207.5.0/PyDev 7.5.0.zip/download',
                 # md5url='https://...',  # TODO: does sourceforge provide the md5 file?
                 md5sum='ca391869d7d9358cab4e2e162a03b57f',
-                file='PyDev 7.5.0.zip')
+                file='PyDev 7.5.0.zip',
+                platform=OS_WINDOWS)
 
 def set_version(versions: Element, version: str=None, url: str=None,
                 md5sum: str=None, file: str=None,
                 md5url: str=None, md5file: str=None,
                 sha256url: str=None, sha256file: str=None,
-                sha256sum: str=None):
+                sha256sum: str=None, platform: str=''):
     #versions = ET.SubElement(elem, Tag.versions)
     if not version:
         return  # noting to do
     version_elem = ET.SubElement(versions, Tag.version)
     #version_elem.text = '2019-09'
     version_elem.set(Names.version_key, version)
-    set_url(version_elem, url)
-    set_md5url(version_elem, md5url, md5file)
-    set_md5sum(version_elem, md5sum)
-    set_file(version_elem, file)
-    set_sha256url(version_elem, sha256url, sha256file)
-    set_sha256sum(version_elem, sha256sum)
+    platform_elem = ET.SubElement(version_elem, Tag.platform)
+    platform_elem.set(Names.name_key, platform)
+
+    set_url(platform_elem, url)
+    set_md5url(platform_elem, md5url, md5file)
+    set_md5sum(platform_elem, md5sum)
+    set_file(platform_elem, file)
+    set_sha256url(platform_elem, sha256url, sha256file)
+    set_sha256sum(platform_elem, sha256sum)
 
 def set_url(elem: Element, url: str=None):
     LMetree.create_subelem(elem, Tag.url, url)
@@ -327,6 +343,7 @@ def parse_apps(elem: Element):
             name = elem_app.get(Names.name_key, None)
             if not name:
                 logger.error('Name is not defined. Skip element.')
+                continue
             logger.info('name: ' + str(name))
             parse_app(elem_app, name)
             '''
@@ -370,30 +387,50 @@ def parse_versions(elem: Element, versions_dict: dict):
             version = elem_ver.get(Names.version_key, None)
             if not version:
                 logger.error('Version is not defined. Skip element.')
+                continue
             logger.info('version: ' + str(version))
             data = {}
             versions_dict[str(version)] = data
-            for ver_tag in elem_ver:
-                if ver_tag.tag == Tag.url:
-                    data['url'] = ver_tag.text
-                elif ver_tag.tag == Tag.file:
-                    data['file'] = ver_tag.text
-                elif ver_tag.tag == Tag.md5url:
-                    data['md5url'] = ver_tag.text
-                elif ver_tag.tag == Tag.md5file:
-                    data['md5file'] = ver_tag.text
-                elif ver_tag.tag == Tag.md5sum:
-                    data['md5sum'] = ver_tag.text
-                elif ver_tag.tag == Tag.sha256url:
-                    data['sha256url'] = ver_tag.text
-                elif ver_tag.tag == Tag.sha256file:
-                    data['sha256file'] = ver_tag.text
-                elif ver_tag.tag == Tag.sha256sum:
-                    data['sha256sum'] = ver_tag.text
-                else:
-                    logger.error('Unhandled tag: ' + str(ver_tag.tag))
+            parse_version(elem_ver, data)
         else:
             logger.error('Unhandled tag: ' + str(elem_ver.tag))
+
+def parse_version(elem_ver: Element, data: dict):
+    for platform in elem_ver:
+        if platform.tag == Tag.platform:
+            name = platform.get(Names.name_key, None)
+            if not name:
+                logger.error('Platform name is not defined. Skip element.')
+                continue
+            logger.info('Platform name: ' + str(name))
+
+            # OS_WINDOWS = 'win32'
+            # OS_LINUX = 'linux'
+            if sys.platform == name:
+                parse_platform(platform, data)
+        else:
+            logger.error('Unhandled tag: ' + str(elem_ver.tag))
+
+def parse_platform(platform: Element, data: dict):
+    for ver_tag in platform:
+        if ver_tag.tag == Tag.url:
+            data['url'] = ver_tag.text
+        elif ver_tag.tag == Tag.file:
+            data['file'] = ver_tag.text
+        elif ver_tag.tag == Tag.md5url:
+            data['md5url'] = ver_tag.text
+        elif ver_tag.tag == Tag.md5file:
+            data['md5file'] = ver_tag.text
+        elif ver_tag.tag == Tag.md5sum:
+            data['md5sum'] = ver_tag.text
+        elif ver_tag.tag == Tag.sha256url:
+            data['sha256url'] = ver_tag.text
+        elif ver_tag.tag == Tag.sha256file:
+            data['sha256file'] = ver_tag.text
+        elif ver_tag.tag == Tag.sha256sum:
+            data['sha256sum'] = ver_tag.text
+        else:
+            logger.error('Unhandled tag: ' + str(ver_tag.tag))
 
 def parse_plugins(elem: Element, plugins_dict: dict):
     for elem_plug in elem:
