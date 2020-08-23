@@ -241,6 +241,15 @@ def append_eclipse(apps: Element):
                 file='eclipse-javascript-2019-12-R-win32-x86_64.zip',
                 platform=OS_WINDOWS)
 
+    #https://www.eclipse.org/downloads/packages/release/2019-12/r
+    set_version(versions,
+                version='2019-12',
+                url='http://ftp.fau.de/eclipse/technology/epp/downloads/release/2019-12/R/eclipse-java-2019-12-R-linux-gtk-x86_64.tar.gz',
+                md5url='http://ftp.fau.de/eclipse/technology/epp/downloads/release/2019-12/R/eclipse-java-2019-12-R-linux-gtk-x86_64.tar.gz.md5',
+                md5file='eclipse-java-2019-12-R-linux-gtk-x86_64.tar.gz.md5',
+                file='eclipse-java-2019-12-R-linux-gtk-x86_64.tar.gz',
+                platform=OS_LINUX)
+
     append_plugins(ecli_elem)
 
 def append_plugins(ecli_elem: Element):
@@ -264,6 +273,16 @@ def append_plugins(ecli_elem: Element):
                 md5sum='ca391869d7d9358cab4e2e162a03b57f',
                 file='PyDev 7.5.0.zip',
                 platform=OS_WINDOWS)
+
+    # TODO: is windows and linux version the same?
+    # TODO: create os 'all'  :)
+    set_version(versions,
+                version='7.5.0',
+                url='https://sourceforge.net/projects/pydev/files/pydev/PyDev%207.5.0/PyDev 7.5.0.zip/download',
+                # md5url='https://...',  # TODO: does sourceforge provide the md5 file?
+                md5sum='ca391869d7d9358cab4e2e162a03b57f',
+                file='PyDev 7.5.0.zip',
+                platform=OS_LINUX)
 
 def set_version(versions: Element, version: str=None, url: str=None,
                 md5sum: str=None, file: str=None,
@@ -390,8 +409,9 @@ def parse_versions(elem: Element, versions_dict: dict):
                 continue
             logger.info('version: ' + str(version))
             data = {}
-            versions_dict[str(version)] = data
             parse_version(elem_ver, data)
+            if data:
+                versions_dict[str(version)] = data
         else:
             logger.error('Unhandled tag: ' + str(elem_ver.tag))
 
