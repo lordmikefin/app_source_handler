@@ -192,10 +192,15 @@ def append_npp(apps: Element):
     npp_elem = append_app_element(apps, Names.Npp.name)
     append_lateset_element(npp_elem, '7.7.1')
     versions = ET.SubElement(npp_elem, Tag.versions)
+    # NOTE(2021-03-21): looks like download.notepad-plus-plus.org site has been shutdown
+    # Notepad++ is now distributed from github
+    # https://github.com/notepad-plus-plus/notepad-plus-plus/releases/tag/v7.7.1
     set_version(versions,
                 version='7.7.1',
-                url='http://download.notepad-plus-plus.org/repository/7.x/7.7.1/npp.7.7.1.Installer.x64.exe',
-                sha256url='http://download.notepad-plus-plus.org/repository/7.x/7.7.1/npp.7.7.1.checksums.sha256',
+                #url='http://download.notepad-plus-plus.org/repository/7.x/7.7.1/npp.7.7.1.Installer.x64.exe',
+                url='https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v7.7.1/npp.7.7.1.Installer.x64.exe',
+                #sha256url='http://download.notepad-plus-plus.org/repository/7.x/7.7.1/npp.7.7.1.checksums.sha256',
+                sha256url='https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v7.7.1/npp.7.7.1.checksums.sha256',
                 sha256file='npp.7.7.1.checksums.sha256',
                 file='npp.7.7.1.Installer.x64.exe',
                 platform=OS_WINDOWS)
