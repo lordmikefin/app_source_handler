@@ -246,13 +246,22 @@ def append_eclipse(apps: Element):
                 file='eclipse-javascript-2019-12-R-win32-x86_64.zip',
                 platform=OS_WINDOWS)
 
+    #https://www.eclipse.org/downloads/packages/release/2019-09/r
+    set_version(versions,
+                version='2019-09',
+                url='https://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/2019-09/R/eclipse-javascript-2019-09-R-linux-gtk-x86_64.tar.gz',
+                md5url='https://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/2019-09/R/eclipse-javascript-2019-09-R-linux-gtk-x86_64.tar.gz.md5',
+                md5file='eclipse-javascript-2019-09-R-linux-gtk-x86_64.tar.gz.md5',
+                file='eclipse-javascript-2019-09-R-linux-gtk-x86_64.tar.gz',
+                platform=OS_LINUX)
+
     #https://www.eclipse.org/downloads/packages/release/2019-12/r
     set_version(versions,
                 version='2019-12',
-                url='http://ftp.fau.de/eclipse/technology/epp/downloads/release/2019-12/R/eclipse-java-2019-12-R-linux-gtk-x86_64.tar.gz',
-                md5url='http://ftp.fau.de/eclipse/technology/epp/downloads/release/2019-12/R/eclipse-java-2019-12-R-linux-gtk-x86_64.tar.gz.md5',
-                md5file='eclipse-java-2019-12-R-linux-gtk-x86_64.tar.gz.md5',
-                file='eclipse-java-2019-12-R-linux-gtk-x86_64.tar.gz',
+                url='https://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/2019-12/R/eclipse-javascript-2019-12-R-linux-gtk-x86_64.tar.gz',
+                md5url='https://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/2019-12/R/eclipse-javascript-2019-12-R-linux-gtk-x86_64.tar.gz.md5',
+                md5file='eclipse-javascript-2019-12-R-linux-gtk-x86_64.tar.gz.md5',
+                file='eclipse-javascript-2019-12-R-linux-gtk-x86_64.tar.gz',
                 platform=OS_LINUX)
 
     append_plugins(ecli_elem)
