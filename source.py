@@ -291,6 +291,14 @@ def append_plugins(ecli_elem: Element):
     # TODO: is windows and linux version the same?
     # TODO: create os 'all'  :)
     set_version(versions,
+                version='7.4.0',
+                url='https://sourceforge.net/projects/pydev/files/pydev/PyDev%207.4.0/PyDev 7.4.0.zip/download',
+                # md5url='https://...',  # TODO: does sourceforge provide the md5 file?
+                md5sum='722dfe4a9bf1f50a2766c4d58eb6dd4d',
+                file='PyDev 7.4.0.zip',
+                platform=OS_LINUX)
+
+    set_version(versions,
                 version='7.5.0',
                 url='https://sourceforge.net/projects/pydev/files/pydev/PyDev%207.5.0/PyDev 7.5.0.zip/download',
                 # md5url='https://...',  # TODO: does sourceforge provide the md5 file?
