@@ -32,6 +32,7 @@ import sys
 
 OS_WINDOWS = 'win32'
 OS_LINUX = 'linux'
+OS_FREEBSD12 = 'freebsd12'
 
 # TODO: should this be a class ?
 APPS = {
@@ -263,6 +264,10 @@ def append_eclipse(apps: Element):
                 md5file='eclipse-javascript-2019-12-R-linux-gtk-x86_64.tar.gz.md5',
                 file='eclipse-javascript-2019-12-R-linux-gtk-x86_64.tar.gz',
                 platform=OS_LINUX)
+
+    # NOTE: There is no file to download for FreeBSD 'OS_FREEBSD12'.
+    # NOTE: FreeBSD repo has Eclipse.
+    # TODO: How to state which version is in OS repo?
 
     append_plugins(ecli_elem)
 
